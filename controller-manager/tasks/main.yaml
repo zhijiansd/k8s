@@ -1,0 +1,26 @@
+- name: 复制 kube-controller-manager
+  copy:
+      src: /root/kubernetes/server/bin/kube-controller-manager
+      dest: /usr/bin/
+      mode: 755
+
+- name: 复制 kube-controller-manager.service
+  template:
+          src: kube-controller-manager.service.j2
+          dest: /usr/lib/systemd/system/kube-controller-manager.service
+
+- name: 复制 kube-controller-manager 配置文件
+  template:
+          src: controller-manager.j2
+          dest: /etc/kubernetes/controller-manager
+
+- name: 新建日志目录
+  file:
+      path: /var/log/kube
+      state: directory
+		  
+- name: 启动kube-controller-manager
+  service:
+          name: kube-controller-manager
+          state: started
+          enabled: yes
