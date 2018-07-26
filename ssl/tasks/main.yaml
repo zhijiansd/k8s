@@ -1,0 +1,12 @@
+- name: 新建证书目录
+  file: path=/etc/kubernetes/ssl state=directory
+- name: 分发证书
+  copy: src=/root/ssl/ dest=/etc/kubernetes/ssl/
+- name: 安装根证书
+  yum: state=present name=ca-certificates
+- name: 开启根证书动态配置
+  command: update-ca-trust force-enable
+- name: 导入自签名的根证书
+  copy: src=/root/ssl/ca.pem dest=/etc/pki/ca-trust/source/anchors/
+- name: 更新根证书
+  command: update-ca-trust extract
