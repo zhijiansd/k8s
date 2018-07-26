@@ -48,7 +48,7 @@ then
 EOF
  done
 else
- echo "---文件不存在---"
+ echo "---password文件不存在---"
 fi
 }
 copy-sshkey
