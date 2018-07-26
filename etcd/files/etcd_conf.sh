@@ -4,9 +4,6 @@ export ETCD_NAME=etcd-$(ip addr|grep ens33|grep inet|awk '{print $2}'|cut -c 13-
 export LOCAL_IP=$(ip addr|grep ens33|grep inet|awk '{print $2}'|cut -c 1-15)
 export ETCD_CLUSTER="etcd-181=https://192.168.100.181:2380,etcd-182=https://192.168.100.182:2380,etcd-183=https://192.168.100.183:2380,etcd-184=https://192.168.100.184:2380,etcd-185=https://192.168.100.185:2380"
 
-##下载 etcd
-curl -L https://storage.googleapis.com/etcd/v3.3.8/etcd-v3.3.8-linux-amd64.tar.gz -o /tmp/etcd-v3.3.8-linux-amd64.tar.gz
-
 ##配置 etcd
 cat << EOF > /etc/etcd/etcd.conf 
 name: '${ETCD_NAME}'
