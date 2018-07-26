@@ -4,6 +4,7 @@ yum -y install ipvsadm curl gcc openssl-devel libnl3-devel net-snmp-devel libnfn
 
 ##编译安装keepalived
 wget http://www.keepalived.org/software/keepalived-2.0.2.tar.gz -O /tmp/keepalived-2.0.2.tar.gz
+tar -zxvf /tmp/keepalived-2.0.2.tar.gz
 cd /tmp/keepalived-2.0.2
 ./configure --sysconf=/etc --prefix=/usr/local/keepalived
 make 
