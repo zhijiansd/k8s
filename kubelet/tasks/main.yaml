@@ -1,0 +1,27 @@
+- name: 复制 kubelet
+  copy:
+      src: /root/kubernetes/server/bin/kubelet
+      dest: /usr/bin/
+      mode: 755
+- name: 复制 kubelet.service
+  template:
+          src: kubelet.service.j2
+          dest: /usr/lib/systemd/system/kubelet.service
+
+- name: 新建日志目录
+  file:
+      path: /var/log/kube
+      state: directory
+- name: 复制 kubelet 脚本文件
+  copy:
+      src: kubelet.sh
+      dest: /tmp
+      mode: 755
+
+- name: 配置 kubelet
+  shell: /bin/bash /tmp/kubelet.sh
+- name: 启动 kubelet
+  service:
+          name: kubelet
+          state: started
+          enabled: yes
