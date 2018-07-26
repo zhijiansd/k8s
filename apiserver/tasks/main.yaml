@@ -1,0 +1,59 @@
+- name: 下载 expect 包
+  yum:
+     state: present 
+     name: expect
+
+- name: 复制 apiserver
+  copy:
+      src: /root/kubernetes/server/bin/kube-apiserver 
+      dest: /usr/bin/
+      mode: 755
+- name: 复制 kubectl
+  copy:
+      src: /root/kubernetes/server/bin/kubectl
+      dest: /usr/bin/
+      mode: 755
+
+- name: 复制 kubeadm
+  copy:
+      src: /root/kubernetes/server/bin/kubeadm
+      dest: /usr/bin/
+      mode: 755
+- name: 复制 kube-apiserver.service
+  template:
+          src: kube-apiserver.service.j2
+          dest: /usr/lib/systemd/system/kube-apiserver.service
+
+- name: 复制 tls-bootstrapping.yaml
+  template:
+          src: tls-bootstrapping.yaml.j2
+          dest: /etc/kubernetes/tls-bootstrapping.yaml
+- name: 复制密码文本
+  copy:
+      src: password.txt
+      dest: /tmp
+      mode: 755
+
+- name: 复制 ssh 脚本文件
+  copy:
+      src: ssh.sh
+      dest: /tmp
+      mode: 755
+- name: 分发秘钥
+  shell: /bin/bash /tmp/ssh.sh
+
+- name: 复制 encrypt-data 脚本文件
+  copy:
+      src: encrypt-data.sh
+      dest: /tmp
+      mode: 755
+- name: 配置 encrypt-data
+  shell: /bin/bash /tmp/encrypt-data.sh
+
+- name: 复制 apiserver 脚本文件
+  copy:
+      src: apiserver.sh
+      dest: /tmp
+      mode: 755
+- name: 配置 并启动kube-apiserver
+  shell: /bin/bash /tmp/apiserver.sh
