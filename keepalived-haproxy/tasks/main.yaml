@@ -11,12 +11,6 @@
          name: haproxy
          state: started 
          enabled: true
-		 
-- name: 解压文件
-  unarchive: 
-           src: /tmp/keepalived-2.0.2.tar.gz
-           dest: /tmp 
-           copy: no
 
 - name: 复制检测脚本文件
   copy:
