@@ -1,0 +1,43 @@
+- name: 复制 kubeconfig.sh  脚本文件
+  copy:
+      src: kubeconfig.sh
+      dest: /tmp
+      mode: 755
+- name: 新建文件夹
+  file: 
+       path: /root/.kube
+       state: directory
+- name: 创建 kubeconfig 并分发至其他 master 节点
+  shell: /bin/bash /tmp/kubeconfig.sh
+
+- name: 复制 controller-manager-config.sh  脚本文件
+  copy:
+      src: controller-manager-config.sh
+      dest: /tmp
+      mode: 755
+- name: 创建 controller-manager-config 并分发至其他 master 节点
+  shell: /bin/bash /tmp/controller-manager-config.sh
+
+- name: 复制 scheduler-config.sh 脚本文件
+  copy:
+      src: scheduler-config.sh
+      dest: /tmp
+      mode: 755
+- name: 创建 scheduler-config 并分发至其他 master 节点
+  shell: /bin/bash /tmp/scheduler-config.sh
+
+- name: 复制 kubelet-config.sh 脚本文件
+  copy:
+      src: kubelet-config.sh
+      dest: /tmp
+      mode: 755
+- name: 创建 kubelet-config 并分发至其他 node 节点
+  shell: /bin/bash /tmp/kubelet-config.sh
+
+- name: 复制 proxy-config.sh 脚本文件
+  copy:
+      src: proxy-config.sh
+      dest: /tmp
+      mode: 755
+- name: 创建 proxy-config 并分发至其他 node 节点
+  shell: /bin/bash /tmp/proxy-config.sh
