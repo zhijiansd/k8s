@@ -1,0 +1,7 @@
+- name: 复制脚本文件
+  copy:
+      src: vip-config.sh
+      dest: /tmp
+      mode: 755
+- name: 配置 VIP-Config
+  shell: /bin/bash /tmp/vip-config.sh
