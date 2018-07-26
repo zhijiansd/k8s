@@ -1,6 +1,7 @@
 #!/bin/bash
 ##截取IP
 LOCAL_IP=`ip addr|grep ens33|grep inet|awk '{print $2}'|cut -c 1-15`
+
 ##配置变量
 export ETCD_ENDPOINTS="https://192.168.100.181:2379,https://192.168.100.182:2379,https://192.168.100.183:2379,https://192.168.100.184:2379,https://192.168.100.185:2379"
 
