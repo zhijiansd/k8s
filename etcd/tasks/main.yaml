@@ -1,0 +1,38 @@
+- name: 复制文件
+  copy: 
+      src: /root/etcd-v3.3.8-linux-amd64.tar.gz 
+      dest: /tmp/etcd-v3.3.8-linux-amd64.tar.gz
+- name: 解压文件
+  unarchive: 
+           src: /tmp/etcd-v3.3.8-linux-amd64.tar.gz 
+           dest: /tmp 
+           copy: no
+
+- name: 新建工作目录
+  file: 
+      path: /etc/etcd 
+      state: directory
+- name: 新建数据目录
+  file: 
+      path: /var/lib/etcd 
+      state: directory
+
+- name: 复制 etcd
+  command: 
+         cp /tmp/etcd-v3.3.8-linux-amd64/etcd /usr/bin
+- name: 复制 etcdctl
+  command: 
+         cp /tmp/etcd-v3.3.8-linux-amd64/etcdctl /usr/bin
+
+- name: 复制启动项
+  template: 
+          src: etcd.service.j2 
+          dest: /usr/lib/systemd/system/etcd.service
+
+- name: 复制脚本文件
+  copy:
+      src: etcd_conf.sh
+      dest: /tmp
+      mode: 755
+- name: 配置并启动etcd
+  shell: /bin/bash /tmp/etcd_conf.sh
