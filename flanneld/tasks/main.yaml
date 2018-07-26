@@ -1,0 +1,48 @@
+- name: 复制 flannel 压缩文件
+  copy: 
+      src: /root/flannel-v0.10.0-linux-amd64.tar.gz
+      dest: /tmp/flannel-v0.10.0-linux-amd64.tar.gz
+- name: 解压文件
+  unarchive: 
+           src: /tmp/flannel-v0.10.0-linux-amd64.tar.gz 
+           dest: /tmp 
+           copy: no
+
+- name: 复制 flanneld
+  command: 
+         cp /tmp/flanneld  /usr/bin/
+- name: 新建目录
+  file: 
+      path: /usr/libexec/flannel/
+      state: directory
+
+- name: 复制 mk-docker-opts.sh
+  command: 
+         cp /tmp/mk-docker-opts.sh  /usr/libexec/flannel/
+- name: 复制 flannel 启动项
+  template:
+          src: flanneld.service.j2
+          dest: /usr/lib/systemd/system/flanneld.service
+
+- name: 复制 docker 启动项
+  template:
+          src: docker.service.j2
+          dest: /usr/lib/systemd/system/docker.service
+- name: 复制 flanneld-start
+  template:
+          src: flanneld-start.j2
+          dest: /usr/bin/flanneld-start
+          mode: 755
+
+- name: 复制 flannel 配置文件
+  template:
+          src: flanneld.j2
+          dest: /etc/sysconfig/flanneld
+- name: 复制运行脚本文件
+  copy:
+      src: running_flannel.sh
+      dest: /tmp
+      mode: 755
+
+- name: 配置并启动flannel
+  shell: /bin/bash /tmp/running_flannel.sh
