@@ -24,9 +24,10 @@ Node节点
 ---
 规划
 ---
-1.所有节点均部署etcd
-2.在ansible主机生成ssl证书，并将所有证书放在了/root/ssl下
-3.kubernetes二进制包以及压缩后的文件夹均位于/root/下
+1. 所有节点均部署etcd
+2. 在ansible主机生成ssl证书，并将所有证书放在了/root/ssl下
+3. kubernetes二进制包以及压缩后的文件夹均位于/root/下
+---
 使用ansible-playbook命令部署集群
 ---
 ```bash
