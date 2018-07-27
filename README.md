@@ -36,7 +36,7 @@ Node节点
 ```bash
 # git clone https://github.com/zhijiansd/ansible-k8s.git
 # mkdir -pv /etc/ansible/roles/
-# mv ansible-k8s/* /etc/ansible/roles/
+# cp -R ansible-k8s/* /etc/ansible/roles/
 # ansible-playbook k8s.yaml
 ```
 ---
