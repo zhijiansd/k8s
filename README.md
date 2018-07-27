@@ -24,9 +24,12 @@ Node节点
 ---
 规划
 ---
-1. 所有节点均部署etcd
+1. 所有节点均部署etcd，版本etcd-v3.3.8
 2. 在ansible主机生成ssl证书，并将所有证书放在了/root/ssl下
-3. kubernetes二进制包以及压缩后的文件夹均位于/root/下
+3. kubernetes二进制包以及压缩后的文件夹均位于/root/下，版本v1.11.1
+4. 在node节点部署flannel，版本flannel-v0.10.0
+5. keepalived和haproxy部署在master节点，版本分别为keepalived-2.0.2和haproxy-1.5.18
+6. 以上规划都能在k8s.yaml文件上有所体现
 ---
 使用ansible-playbook命令部署集群
 ---
