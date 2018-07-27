@@ -253,10 +253,10 @@ EOF
 10.校验证书
 ---
 ```bash
-# openssl x509  -noout -text -in  kubernetes.pem
-# cfssl-certinfo -cert kubernetes.pem
-# openssl verify -CAfile ca.pem kubernetes.pem
-kubernetes: OK
+# openssl x509  -noout -text -in  apiserver.pem
+# cfssl-certinfo -cert apiserver.pem
+# openssl verify -CAfile ca.pem apiserver.pem
+apiserver.pem: OK
 # mkdir /root/ssl && cp *.pem /root/ssl
 # ls /roo/ssl/
 admin-key.pem  admin.pem  apiserver-key.pem  apiserver.pem  ca-key.pem  ca.pem  controller-manager-key.pem  controller-manager.pem  etcd-key.pem  etcd.pem  scheduler-key.pem  scheduler.pem
