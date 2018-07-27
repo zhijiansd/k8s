@@ -34,6 +34,9 @@ Node节点
 使用ansible-playbook命令部署集群
 ---
 ```bash
+# git clone https://github.com/zhijiansd/ansible-k8s.git
+# mkdir -pv /etc/ansible/roles/
+# mv ansible-k8s/* /etc/ansible/roles/
 # ansible-playbook k8s.yaml
 ```
 ---
