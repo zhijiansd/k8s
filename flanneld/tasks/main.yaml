@@ -38,11 +38,8 @@
   template:
           src: flanneld.j2
           dest: /etc/sysconfig/flanneld
-- name: 复制运行脚本文件
-  copy:
-      src: running_flannel.sh
-      dest: /tmp
-      mode: 755
-
-- name: 配置并启动flannel
-  shell: /bin/bash /tmp/running_flannel.sh
+- name: 启动 flannel
+  service:
+          name: flanneld
+          state: started
+          enabled: yes
