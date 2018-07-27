@@ -55,7 +55,7 @@ copy-sshkey
 
 if   [ $? == 0 ]
 then
-     echo "---脚本正常执行,删除密码--- "
+     echo "---脚本正常执行,删除密码文件--- "
      rm -rf /tmp/password.txt
 else
      echo "---脚本未正常执行--- "
