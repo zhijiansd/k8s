@@ -18,7 +18,7 @@
   file:
       path: /var/log/kube
       state: directory
-		  
+
 - name: 启动kube-controller-manager
   service:
           name: kube-controller-manager
