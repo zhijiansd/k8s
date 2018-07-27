@@ -1,3 +1,18 @@
+---
+安装Ansible
+---
+```bash
+# yum -y install ansible
+# cat /etc/ansible/hosts | egrep -v "^#|^$"
+[master]
+192.168.100.181
+192.168.100.182
+[node]
+192.168.100.183
+192.168.100.184
+192.168.100.185
+```
+---
 生成ssh公钥认证所需的公钥和私钥文件
 ---
 ``` bash
@@ -62,4 +77,16 @@ else
 fi
 # chmod 755 pass.sh 
 # source pass.sh
+```
+---
+在ansible主机配置hosts并复制至所有节点(另:请自行更改各节点)
+---
+```bash
+# vim hosts
+192.168.100.181  master1
+192.168.100.182  master2
+192.168.100.183  node01
+192.168.100.184  node02
+192.168.100.185  node03
+# ansible all -m copy -a 'src=hosts dest=/etc/'
 ```
