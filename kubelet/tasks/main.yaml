@@ -12,14 +12,15 @@
   file:
       path: /var/log/kube
       state: directory
+
 - name: 复制 kubelet 脚本文件
   copy:
       src: kubelet.sh
       dest: /tmp
       mode: 755
-
 - name: 配置 kubelet
   shell: /bin/bash /tmp/kubelet.sh
+  
 - name: 启动 kubelet
   service:
           name: kubelet
