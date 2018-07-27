@@ -16,7 +16,7 @@
   template:
           src: kube-proxy.service.j2
           dest: /usr/lib/systemd/system/kube-proxy.service
-	  
+
 - name: 复制 proxy
   template:
           src: proxy.j2
