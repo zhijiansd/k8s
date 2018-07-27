@@ -79,7 +79,7 @@ fi
 # source pass.sh
 ```
 ---
-在ansible主机配置hosts并复制至所有节点(另:请自行更改各节点)
+在ansible主机配置hosts并复制至所有节点(另:请自行更改各节点hostname主机名)
 ---
 ```bash
 # vim hosts
