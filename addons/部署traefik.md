@@ -70,7 +70,8 @@ tls.crt:  1107 bytes
 tls.key:  1704 bytes
 ```
 注:密钥必须有两个名为tls.key和tls.crt的条目
-+ 配置人口点
+
++ 配置入口点
 ```bash
 # vim traefik.toml 
 defaultEntryPoints = ["http","https"]
@@ -97,6 +98,7 @@ insecureskipverify = true
   这将禁用中间人攻击的检测，因此只能用于安全的后端网络。
   
 + 创建ConfigMap	  
+```bash
 # kubectl -n kube-system create configmap traefik --from-file=traefik.toml
 configmap/traefik created
 # kubectl get configmap -n kube-system traefik
