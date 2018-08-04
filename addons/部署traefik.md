@@ -90,7 +90,7 @@ insecureskipverify = true
 ```
 注:
 1. 如上定义了两个入口点，http 和 https
-1.  [http 监听 80 端口， https 监听 443 端口]
+1. http 监听 80 端口， https 监听 443 端口
 1.  [通过提供一个证书和一个密钥在 https 中开启SSL]
 1.  [转发所有的 http 入口点请求到 https入口点]
 1.  [insecureSkipVerify :
