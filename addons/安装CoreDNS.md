@@ -4,7 +4,7 @@
 ```bash
 # wget https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/dns/coredns/coredns.yaml.base
 # cp coredns.yaml.base coredns.yaml
-bash
+```
 ---
 修改相应配置
 ---
@@ -12,7 +12,7 @@ bash
 # sed -i "s/k8s.gcr.io/192.168.100.100\/coreos/g" coredns.yaml
 # sed -i "s/__PILLAR__DNS__DOMAIN__/cluster.local/g" coredns.yaml
 # sed -i "s/__PILLAR__DNS__SERVER__/10.244.0.2/g" coredns.yaml
-bash
+```
 ---
 创建CoreDNS
 ---
@@ -24,7 +24,7 @@ clusterrolebinding.rbac.authorization.k8s.io/system:coredns configured
 configmap/coredns configured
 deployment.extensions/coredns configured
 service/kube-dns configured
-bash
+```
 ---
 查看CoreDNS
 ---
@@ -35,7 +35,7 @@ coredns-84b5dddcdd-4tbqt   1/1       Running   0          5h
 # kubectl cluster-info
 Kubernetes master is running at https://192.168.100.180:8443
 CoreDNS is running at https://192.168.100.180:8443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
-bash
+```
 ---
 测试CoreDNS
 ---
@@ -73,9 +73,10 @@ deployment.extensions/my-nginx created
 # kubectl get pod
 NAME                       READY     STATUS    RESTARTS   AGE
 my-nginx-87fb996b8-9xzb9   1/1       Running   0          20m
-bash
+```
 
 + 测试CoreDNS
+```bash
 # kubectl exec my-nginx-87fb996b8-9xzb9 -- cat /etc/resolv.conf 
 nameserver 10.244.0.2
 search default.svc.cluster.local svc.cluster.local cluster.local
@@ -89,4 +90,4 @@ PING my-nginx.default.svc.cluster.local (10.244.107.1): 56 data bytes
 # kubectl exec my-nginx-87fb996b8-9xzb9 -- ping -c 1 kubernetes
 PING kubernetes.default.svc.cluster.local (10.244.0.1): 56 data bytes
 64 bytes from 10.244.0.1: icmp_seq=0 ttl=64 time=0.326 ms
-bash
+```
