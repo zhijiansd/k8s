@@ -188,6 +188,7 @@ spec:
         - --configfile=/config/traefik.toml
         - --kubernetes
         - --logLevel=INFO
+---
 ```
 ---
 重新配置 UI
@@ -215,6 +216,7 @@ spec:
           servicePort: web
   tls:
    - secretName: traefik-ui-tls-cert
+---
 ```
 ---
 部署traefik
@@ -253,5 +255,5 @@ traefik-web-ui   traefik-ui.io             80, 443   1m
 # kubectl get service -n kube-system | grep traefik
 traefik-ingress-service   ClusterIP   10.244.67.143   <none>        80/TCP,8080/TCP   1m
 traefik-web-ui            ClusterIP   10.244.43.185   <none>        80/TCP            1m
-bash
+```
 
