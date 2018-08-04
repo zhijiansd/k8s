@@ -256,4 +256,6 @@ traefik-web-ui   traefik-ui.io             80, 443   1m
 traefik-ingress-service   ClusterIP   10.244.67.143   <none>        80/TCP,8080/TCP   1m
 traefik-web-ui            ClusterIP   10.244.43.185   <none>        80/TCP            1m
 ```
-
+---
+客户端配置任意node的hosts，然后浏览器输入traefik-ui.io在弹出的窗口中输入admin及其密码即可登录traefik
+---
