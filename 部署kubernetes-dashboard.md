@@ -132,5 +132,5 @@ clusterrolebinding.rbac.authorization.k8s.io/admin-user created
 ```bash
 # kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
 ```
-1. basic基本身份验证
+3. basic基本身份验证
 输入在配置apiserver时--basic-auth-file下的用户名和密码即可登录
