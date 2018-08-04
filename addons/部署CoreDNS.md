@@ -14,7 +14,7 @@
 # sed -i "s/__PILLAR__DNS__SERVER__/10.244.0.2/g" coredns.yaml
 ```
 ---
-创建CoreDNS
+部署CoreDNS
 ---
 ```bash
 # kubectl apply -f coredns.yaml
