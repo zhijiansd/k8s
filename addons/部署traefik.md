@@ -89,13 +89,13 @@ insecureskipverify = true
       KeyFile = "/ssl/tls.key"
 ```
 注:
-+ 如上定义了两个入口点，http 和 https	  
-+ http 监听 80 端口， https 监听 443 端口
-+ 通过提供一个证书和一个密钥在 https 中开启SSL
-+ 转发所有的 http 入口点请求到 https入口点
-+ insecureSkipVerify :
-  如果设置为true，则后端将接受无效的SSL证书。
-  这将禁用中间人攻击的检测，因此只能用于安全的后端网络。
+1. [如上定义了两个入口点，http 和 https]
+2. [http 监听 80 端口， https 监听 443 端口]
+3. [通过提供一个证书和一个密钥在 https 中开启SSL]
+4. [转发所有的 http 入口点请求到 https入口点]
+5. [insecureSkipVerify :
+   如果设置为true，则后端将接受无效的SSL证书。
+   这将禁用中间人攻击的检测，因此只能用于安全的后端网络。]
   
 + 创建ConfigMap	  
 ```bash
