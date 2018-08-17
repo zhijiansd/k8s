@@ -2,9 +2,9 @@
 下载部署traefik所需yaml文件
 ---
 ```bash
-# wget https://raw.githubusercontent.com/containous/traefik/master/examples/k8s/traefik-rbac.yaml
-# wget https://raw.githubusercontent.com/containous/traefik/master/examples/k8s/traefik-ds.yaml
-# wget https://raw.githubusercontent.com/containous/traefik/master/examples/k8s/ui.yaml
+wget https://raw.githubusercontent.com/containous/traefik/master/examples/k8s/traefik-rbac.yaml
+wget https://raw.githubusercontent.com/containous/traefik/master/examples/k8s/traefik-ds.yaml
+wget https://raw.githubusercontent.com/containous/traefik/master/examples/k8s/ui.yaml
 ```
 ---
 配置Basic身份验证
