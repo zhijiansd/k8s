@@ -2,16 +2,16 @@
 下载CoreDNS.yaml
 ---
 ```bash
-# wget https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/dns/coredns/coredns.yaml.base
-# cp coredns.yaml.base coredns.yaml
+wget https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/dns/coredns/coredns.yaml.base
+cp coredns.yaml.base coredns.yaml
 ```
 ---
 修改相应配置
 ---
 ```bash
-# sed -i "s/k8s.gcr.io/192.168.100.100\/coreos/g" coredns.yaml
-# sed -i "s/__PILLAR__DNS__DOMAIN__/cluster.local/g" coredns.yaml
-# sed -i "s/__PILLAR__DNS__SERVER__/10.244.0.2/g" coredns.yaml
+sed -i "s/k8s.gcr.io/192.168.100.100\/coreos/g" coredns.yaml
+sed -i "s/__PILLAR__DNS__DOMAIN__/cluster.local/g" coredns.yaml
+sed -i "s/__PILLAR__DNS__SERVER__/10.244.0.2/g" coredns.yaml
 ```
 ---
 部署CoreDNS
