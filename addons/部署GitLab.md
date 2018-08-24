@@ -44,7 +44,7 @@ kubectl create -f gitlab-svc.yaml
 - `GITLAB_SECRETS_DB_KEY_BASE` 用于加密数据库中的CI密钥变量以及导入凭证。如果丢失或轮换此秘密，您将无法使用现有的CI秘密。
 - `GITLAB_SECRETS_SECRET_KEY_BASE` 用于密码重置链接和其他“标准”身份验证功能。如果丢失或轮换此密码，电子邮件中的密码重置令牌将重置。
 
-> **注**: 可以使用`pwgen -Bsv1 64`生成随机字符串并将其指定为如上值.
+> **注**: 可以使用`pwgen -Bsv1 64`命令生成随机字符串并将其指定为如上值.
 
 - `GITLAB_ROOT_PASSWORD`配置GitLab的root密码。
 - `GITLAB_ROOT_EMAIL`配置GitLab的root用户的Email。
@@ -54,6 +54,7 @@ kubectl create -f gitlab-rc.yaml
 ```
 ---
 + 查看Pod和Service
+```bash
 # kubectl -n gitlab get pod
 NAME               READY     STATUS    RESTARTS   AGE
 gitlab-jmwbr       1/1       Running   0          1h
