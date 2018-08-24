@@ -1,5 +1,5 @@
 
-# 配置都是从如下项目copy过来的(配置已放在gitlab文件夹下)，感谢:
+# 配置从如下项目copy过来并已放在gitlab文件夹下(有删改)，感谢:
 [github.com/sameersbn/docker-gitlab](https://github.com/sameersbn/docker-gitlab)
 > **注**:生产环境请进行持久化部署
 ---
