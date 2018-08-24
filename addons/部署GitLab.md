@@ -1,8 +1,7 @@
 
 # 配置都是从如下项目copy过来的(配置已放在gitlab文件夹下)，感谢:
----
 [github.com/sameersbn/docker-gitlab](https://github.com/sameersbn/docker-gitlab)
-注:生产环境请进行持久化部署
+> **注**:生产环境请进行持久化部署
 ---
 1.部署Namespace
 ---
@@ -27,7 +26,7 @@ kubectl create -f postgresql-rc.yaml
 5.部署GitLab
 ---
 + 创建 ConfigMap
-注:[sameersbn]项目中的关于gitlab.rb的变量并不能载入Pod，只能使用configmap载入pod
+> **注**:[sameersbn]项目中的关于gitlab.rb的变量并不能载入Pod，只能使用configmap载入pod
 ---
 ```bash
 kubectl -n gitlab create configmap gitlab-rb --from-file=gitlab.rb
