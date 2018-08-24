@@ -6,7 +6,7 @@
 1.部署Namespace
 ---
 ```bash
-kubectl apply -f gitlab-ns.yaml 
+kubectl create -f gitlab-ns.yaml 
 ```
 ---
 2.部署Redis
