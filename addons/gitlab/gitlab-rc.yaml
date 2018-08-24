@@ -1,0 +1,98 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: gitlab
+  namespace: gitlab
+spec:
+  replicas: 1
+  selector:
+    name: gitlab
+  template:
+    metadata:
+      name: gitlab
+      labels:
+        name: gitlab
+    spec:
+      volumes:
+      - name: data
+        emptyDir: {}
+      - name: config-volume
+        configMap: 
+          name: gitlab-rb
+      containers:
+      - name: gitlab
+        image: 192.168.100.100/gitlab/gitlab:11.1.4-ce
+        volumeMounts:
+        - mountPath: /home/git/data
+          name: data
+        - mountPath: "/etc/gitlab/gitlab.rb"
+          name: config-volume
+          subPath: gitlab.rb
+        env:
+        - name: TZ
+          value: Asia/BeiJing
+        - name: GITLAB_TIMEZONE
+          value: BeiJing
+
+        - name: GITLAB_SECRETS_DB_KEY_BASE
+          value: rVhTJmMMnn3RCwxXV7HCTNTkJXWLPjJhNHM3sWTgKwnqnNVTwNCVJ7zPLzKgVz7z
+        - name: GITLAB_SECRETS_SECRET_KEY_BASE
+          value: VkT7bxtXRsgvLpqRgbVnJKfjTMs7TsWrkXfmntPvbNWRLc4dxK9cWkLNpnNNvmsM
+        - name: GITLAB_SECRETS_OTP_KEY_BASE
+          value: Xgksv7WKTvWVrNm9vcvbdgMnVqXLPb3F9XvbFLXNLTTXtzcvJgp7nTrdbxN444Jt
+
+        - name: GITLAB_ROOT_PASSWORD
+          value: wangzhijian
+        - name: GITLAB_ROOT_EMAIL
+          value: wangzhijiansd@qq.com
+
+        - name: GITLAB_HOST
+          value: git.default.svc.cluster.local
+        - name: GITLAB_PORT
+          value: "80"
+        - name: GITLAB_SSH_PORT
+          value: "22"
+
+        - name: GITLAB_NOTIFY_ON_BROKEN_BUILDS
+          value: "true"
+        - name: GITLAB_NOTIFY_PUSHER
+          value: "false"
+
+        - name: GITLAB_BACKUP_SCHEDULE
+          value: daily
+        - name: GITLAB_BACKUP_TIME
+          value: 01:00
+
+        - name: DB_TYPE
+          value: postgres
+        - name: DB_HOST
+          value: postgresql
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_USER
+          value: gitlab
+        - name: DB_PASS
+          value: passw0rd
+        - name: DB_NAME
+          value: gitlab_production
+
+        - name: REDIS_HOST
+          value: redis
+        - name: REDIS_PORT
+          value: "6379"
+
+        ports:
+        - name: http
+          containerPort: 80
+        - name: ssh
+          containerPort: 22
+        - name: prometheus
+          containerPort: 9090
+        - name: node-exporter
+          containerPort: 9100
+        - name: redis-exporter
+          containerPort: 9121
+        - name: postgres-export
+          containerPort: 9187
+        - name: gitlab-monitor
+          containerPort: 9168
