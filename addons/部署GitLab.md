@@ -1,7 +1,7 @@
 
 # 配置从如下项目copy并已放在gitlab文件夹下(有删改)，感谢:
 [github.com/sameersbn/docker-gitlab](https://github.com/sameersbn/docker-gitlab)
-> **注**:生产环境请进行持久化部署
+> **注**:生产环境请使用持久化存储部署
 ---
 1.部署Namespace
 ---
