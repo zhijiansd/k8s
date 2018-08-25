@@ -16,14 +16,14 @@ kubectl create -f redis-svc.yaml
 kubectl create -f redis-rc.yaml 
 ```
 ---
-4.部署PostgreSQL
+3.部署PostgreSQL
 ---
 ```bash
 kubectl create -f postgresql-svc.yaml 
 kubectl create -f postgresql-rc.yaml 
 ```
 ---
-5.部署GitLab
+4.部署GitLab
 ---
 + 创建 ConfigMap
 - `gitlab_rails['smtp_password']`使用的是授权码。
