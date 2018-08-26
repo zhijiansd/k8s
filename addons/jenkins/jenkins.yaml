@@ -1,0 +1,46 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: jenkins
+  namespace: kube-ops
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: jenkins
+      labels:
+        name: jenkins
+    spec:
+      containers:
+      - name: jenkins
+        image: 192.168.100.100/jenkinsci/blueocean:1.8.2
+        ports:
+        - name: web
+          containerPort: 8080
+        - name: agent
+          containerPort: 50000
+        volumeMounts:
+        - mountPath: /var/jenkins_home
+          name: jenkins-data
+      volumes:
+      - name: jenkins-data
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins
+  namespace: kube-ops
+  labels:
+    name: jenkins
+spec:
+  type: LoadBalancer
+  ports:
+    - name: web
+      port: 8080
+      targetPort: web
+    - name: agent
+      port: 50000
+      targetPort: agent
+  selector:
+    name: jenkins
