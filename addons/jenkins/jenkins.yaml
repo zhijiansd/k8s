@@ -21,9 +21,15 @@ spec:
         volumeMounts:
         - mountPath: /var/jenkins_home
           name: jenkins-data
+        volumeMounts:
+        - mountPath: /var/run/docker.sock
+          name: docker          
       volumes:
       - name: jenkins-data
         emptyDir: {}
+      - name: docker
+        hostPath: 
+          path: /var/run/docker.sock        
 ---
 apiVersion: v1
 kind: Service
