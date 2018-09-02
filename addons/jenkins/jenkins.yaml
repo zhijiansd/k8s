@@ -10,9 +10,13 @@ spec:
       labels:
         name: jenkins
     spec:
+      serviceAccountName: jenkins    
       containers:
       - name: jenkins
-        image: 192.168.100.100/jenkinsci/blueocean:1.8.2
+        image: 192.168.100.100/jenkins/jenkins:lts
+        env:
+        - name: JAVA_OPTS
+          value: "-Duser.timezone=Asia/Shanghai"          
         ports:
         - name: web
           containerPort: 8080
