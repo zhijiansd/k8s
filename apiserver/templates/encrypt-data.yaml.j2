@@ -1,0 +1,12 @@
+apiVersion: apiserver.config.k8s.io/v1
+kind: EncryptionConfiguration
+resources:
+  - resources:
+    - secrets
+    providers:
+    - aescbc:
+        keys:
+        - name: key1
+          #生成一个32字节的随机密钥，并对其进行base64编码(head -c 32 /dev/urandom | base64)
+          secret: 2HZdyv0PHBXuJa22kSF0jw6pWmnlMr0puYIpem+V0ys=
+    - identity: {}

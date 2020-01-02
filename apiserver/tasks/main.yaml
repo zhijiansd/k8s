@@ -1,0 +1,41 @@
+- name: 复制文件
+  vars:
+    localdir: /{{ local_dir }}/kubernetes/server/bin
+    bin_dir: /usr/bin
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: 755
+  with_items:
+    - { src: '{{ localdir }}/kube-apiserver', dest: '{{ bin_dir }}' }
+    - { src: '{{ localdir }}/kubectl', dest: '{{ bin_dir }}' }
+    - { src: '{{ localdir }}/kubeadm', dest: '{{ bin_dir }}' }
+
+- name: 复制 encrypt-data.yaml
+  template:
+          src: encrypt-data.yaml.j2
+          dest: "{{ config_dir }}/{{ encrypt_config }}"
+
+- name: 复制 apiserver 配置文件
+  template:
+          src: apiserver.j2
+          dest: "{{ config_dir }}/{{ config_file }}"
+- name: 复制 kube-apiserver.service
+  template:
+          src: kube-apiserver.service.j2
+          dest: /usr/lib/systemd/system/kube-apiserver.service
+
+- name: 新建日志文件
+  file:
+    path: "{{ log_dir }}/{{ log_file }}"
+    state: touch
+
+- name: 重载
+  command: systemctl daemon-reload
+
+- name: 启动 kube-apiserver
+  service:
+          name: kube-apiserver
+          state: started
+          enabled: yes
+
