@@ -1,0 +1,68 @@
+- hosts: etcd,master,node
+  remote_user: root
+  gather_facts: no
+  roles:
+      - allhosts
+
+- hosts: etcd
+  remote_user: root
+  roles:
+       - etcd
+
+- hosts: master,node
+  remote_user: root
+  gather_facts: no
+  tasks:
+    - name: 新建工作目录
+      file: 
+        path: /etc/kubernetes
+        state: directory
+    - name: 新建日志文件目录
+      file: 
+        path: /var/log/kubernetes
+        state: directory
+
+- hosts: master
+  remote_user: root
+  roles:
+       - apiserver
+       - keepalived-haproxy
+       - config
+       - controller-manager
+       - scheduler
+       - master-auth
+
+- hosts: node
+  remote_user: root
+  vars:
+    system_version: 7
+    containerd_version: "1.2.6-3.3.el7"
+  tasks:
+    - name: 安装 wget
+      yum: name=wget state=present
+    - name: 安装 yum-utils
+      yum: name=yum-utils state=present
+    - name: 安装 device-mapper-persistent-data
+      yum: name=device-mapper-persistent-data state=present
+    - name: 安装 lvm2
+      yum: name=lvm2 state=present
+    - name: 添加源
+      shell: yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+    - name: yum makecache
+      shell: yum makecache
+    - name: 安装 containerd.io
+      dnf:
+        name: 'http://download.docker.com/linux/centos/{{ system_version }}/x86_64/stable/Packages/containerd.io-{{ containerd_version }}.x86_64.rpm'
+        state: present
+    - name: 安装 docker
+      yum: name=docker-ce state=present
+    - name: 启用 docker
+      service: name=docker.service enabled=yes state=started
+
+- hosts: node
+  remote_user: root
+  roles:
+       - flanneld
+       - kubelet
+       - proxy
+
