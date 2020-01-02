@@ -1,0 +1,18 @@
+[Unit]
+Description=etcd
+After=network.target
+After=network-online.target
+Wants=network-online.target
+Documentation=https://github.com/etcd-io/etcd
+
+[Service]
+Type=notify
+WorkingDirectory={{ etcd_data_dir }}
+EnvironmentFile={{ etcd_work_dir }}/{{ etcd_config_file }}
+ExecStart={{ bin_dir }}/etcd --config-file {{ etcd_work_dir }}/{{ etcd_config_file }}
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

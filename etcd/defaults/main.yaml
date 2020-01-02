@@ -1,0 +1,18 @@
+local_dir: root
+remote_dir: tmp
+etcd_version: "v3.3.18"
+
+bin_dir: "/usr/bin"
+etcd_work_dir: "/etc/etcd"
+etcd_config_file: "etcd.conf"
+etcd_data_dir: "/var/lib/etcd"
+
+etcd_peer_addresses: "etcd1=https://192.168.100.136:2380,etcd2=https://192.168.100.137:2380,etcd3=https://192.168.100.138:2380"
+etcd_snapshot_count: "100000"
+etcd_heartbeat_interval: "250"
+etcd_election_timeout: "5000"
+etcd_max_snapshots: "5"
+etcd_cert_dir: "/etc/ssl/etcd"
+
+etcd_prefix: "/kube/network"
+etcd_flanneld: "192.168.100.136"

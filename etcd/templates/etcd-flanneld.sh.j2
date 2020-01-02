@@ -1,0 +1,3 @@
+#!/bin/bash
+etcdctl --endpoints=https://{{ etcd_flanneld }}:2379 mkdir {{ etcd_prefix }}
+etcdctl --endpoints=https://{{ etcd_flanneld }}:2379 set {{ etcd_prefix }}/config '{ "Network": "10.244.0.0/16" }'

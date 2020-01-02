@@ -1,0 +1,20 @@
+name: {{ ansible_nodename }}
+heartbeat-interval: {{ etcd_heartbeat_interval }}    
+election-timeout: {{ etcd_election_timeout }}
+data-dir: {{ etcd_data_dir }}
+listen-peer-urls: https://{{ ansible_default_ipv4.address }}:2380
+listen-client-urls: https://{{ ansible_default_ipv4.address }}:2379,https://127.0.0.1:2379
+initial-advertise-peer-urls: https://{{ ansible_default_ipv4.address }}:2380
+advertise-client-urls: https://{{ ansible_default_ipv4.address }}:2379
+initial-cluster: {{ etcd_peer_addresses }}
+etcd_client_url: "https://{{ ansible_default_ipv4.address }}:2379"
+initial-cluster-token: 'etcd-cluster'
+initial-cluster-state: 'new'   ##初始化集群状态('new' or 'existing')
+client-transport-security:
+  cert-file: {{ etcd_cert_dir }}/etcd.pem
+  key-file: {{ etcd_cert_dir }}/etcd-key.pem
+  trusted-ca-file: {{ etcd_cert_dir }}/ca.pem
+peer-transport-security:
+  cert-file: {{ etcd_cert_dir }}/etcd.pem
+  key-file: {{ etcd_cert_dir }}/etcd-key.pem
+  trusted-ca-file: {{ etcd_cert_dir }}/ca.pem
