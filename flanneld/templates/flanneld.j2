@@ -1,0 +1,3 @@
+FLANNEL_ETCD_ENDPOINTS="{{ etcd_endpoints }}"
+FLANNEL_ETCD_PREFIX="{{ etcd_prefix }}"
+FLANNEL_OPTIONS="-etcd-cafile={{ cert_dir }}/{{ ca_certfile }} -etcd-certfile={{ cert_dir }}/{{ etcd_certfile }} -etcd-keyfile={{ cert_dir }}/{{ etcd_keyfile }}"
