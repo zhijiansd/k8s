@@ -1,0 +1,21 @@
+[Unit]
+Description=Kubernetes Kubelet Server
+Documentation=https://github.com/kubernetes/kubernetes
+After=docker.service
+Requires=docker.service
+
+[Service]
+WorkingDirectory={{ kubelet_dir }}
+EnvironmentFile=-{{ config_dir }}/{{ config_file }}
+ExecStart={{ bin_dir }}/kubelet \
+            $KUBE_LOGTOSTDERR \
+            $KUBE_LOG_LEVEL \
+            $NODE_HOSTNAME \
+            $KUBELET_POD_INFRA_CONTAINER \
+            $KUBELET_CONTAINER_RUNTIME \
+            $KUBE_LOG_ARGS \
+            $KUBELET_ARGS
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

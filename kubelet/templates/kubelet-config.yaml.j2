@@ -1,0 +1,73 @@
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+address: {{ ansible_default_ipv4.address }}
+authentication:
+    x509:
+         clientCAFile: {{ cert_dir }}/{{ ca_certfile }}
+    webhook:
+            enabled: false
+    anonymous:
+           enabled: false
+authorization:
+    mode: AlwaysAllow
+cgroupDriver: cgroupfs
+cgroupRoot: ""
+cgroupsPerQOS: true
+cpuCfsQuota: true
+cpuManagerPolicy: static
+cpuManagerReconcilePeriod: 1m
+clusterDNS:
+           - "10.244.0.2"
+clusterDomain: "cluster.local"
+evictionHard:
+    memory.available:  "15%"
+    imagefs.available: "15%"
+    nodefs.available: "15%"
+    nodefs.inodesFree: "5%"
+evictionMinimumReclaim:
+    memory.available:  "10%"
+    imagefs.available: "10%"
+    nodefs.available: "10%"
+evictionPressureTransitionPeriod: 5m
+evictionSoft:
+    memory.available:  "5%"
+    imagefs.available: "5%"
+    nodefs.available: "5%"
+evictionSoftGracePeriod:
+    memory.available:  2m
+    imagefs.available: 2m
+    nodefs.available: 2m
+eventQps: 10
+eventBurst: 5 
+failSwapOn: false
+fileCheckFrequency: 20s
+hairpinMode: "promiscuous-bridge"
+healthzBindAddress: 127.0.0.1
+healthzPort: 10248
+hostnameOverride: {{ ansible_hostname }}
+httpCheckFrequency: 20s
+imageGCHighThreshold: 85
+imageGCLowThreshold: 80
+imagePullProgressDeadline: 5m
+kubeAPIBurst: 200
+kubeAPIQPS: 100 
+kubeReserved:
+    cpu: "500m"
+    memory: "512Mi"
+    ephemeral-storage: "512Mi"
+maxOpenFiles: 100000
+maxPods: 110
+minimumImageTTLDuration: 5m
+podMaxPids: -1
+port: 10250
+RotateCertificates: true
+RotateServerCertificates: true
+runtimeRequestTimeout: 5m
+serializeImagePulls: false
+systemReserved:
+    cpu: "500m"
+    memory: "512Mi"
+    ephemeral-storage: "512Mi"
+featureGates:
+    RotateKubeletClientCertificate: true
+    RotateKubeletServerCertificate: true
