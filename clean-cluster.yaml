@@ -1,0 +1,151 @@
+- hosts: node
+  remote_user: root
+  tasks:
+    - name: 停止程序
+      service:
+        name: '{{ item.name }}'
+        state: stopped
+      with_items:
+        - { name: 'kubelet' }
+        - { name: 'kube-proxy' }
+        - { name: 'flanneld' }
+        - { name: 'docker' }
+    
+    - name: 卸载 docker
+      yum:
+        name: docker
+        state: absent
+
+    - name: 删除相关目录
+      file:
+        path: '{{ item.path }}'
+        state: absent
+      with_items:
+        - { path: '/var/log/kubernetes' }
+        - { path: '/etc/kubernetes' }
+        - { path: '/var/lib/kubelet' }
+        - { path: '/var/run/flannel' }
+        - { path: '/usr/libexec/flannel' }
+        - { path: '/etc/sysconfig/flanneld' }
+        - { path: '/var/lib/docker' }
+
+    - name: 删除启动项文件
+      file:
+        path: /usr/lib/systemd/system/{{ item.service }}.service
+        state: absent
+      with_items:
+        - { service: 'kubelet' }
+        - { service: 'kube-proxy' }
+        - { service: 'flanneld' }
+        - { service: 'docker' }
+
+    - name: 删除二进制文件
+      file:
+        path: /usr/bin/{{ item.bin }}
+        state: absent
+      with_items:
+        - { bin: 'kubelet' }
+        - { bin: 'kube-proxy' }
+        - { bin: 'flanneld-start' }
+
+    - name: 删除证书文件
+      file:
+        path: /etc/ssl/kubernetes
+        state: absent
+
+    - name: 删除 网桥
+      shell: ip link del docker0 && ip link del kube-ipvs0
+
+    - name: 清理 iptables 规则
+      shell: iptables -F && iptables -X && sudo iptables -Z
+
+
+- hosts: master
+  remote_user: root
+  tasks:
+    - name: 停止程序
+      service:
+        name: '{{ item.name }}'
+        state: stopped
+      with_items:
+        - { name: 'haproxy' }
+        - { name: 'keepalived' }
+        - { name: 'kube-scheduler' }
+        - { name: 'kube-controller-manager' }
+        - { name: 'kube-apiserver' }
+
+    - name: 删除相关目录
+      file:
+        path: '{{ item.path }}'
+        state: absent
+      with_items:
+        - { path: '/etc/haproxy' }
+        - { path: '/etc/keepalived' }
+        - { path: '/var/log/kubernetes' }
+        - { path: '/etc/kubernetes' }
+
+    - name: 删除启动项文件
+      file:
+        path: /usr/lib/systemd/system/{{ item.service }}.service
+        state: absent
+      with_items:
+        - { service: 'haproxy' }
+        - { service: 'keepalived' }
+        - { service: 'kube-scheduler' }
+        - { service: 'kube-controller-manager' }
+        - { service: 'kube-apiserver' }
+
+    - name: 删除二进制文件
+      file:
+        path: /usr/local/sbin/{{ item.bin }}
+        state: absent
+      with_items:
+        - { bin: 'haproxy' }
+        - { bin: 'keepalived' }
+    - name: 删除二进制文件
+      file:
+        path: /usr/bin/{{ item.bin }}
+        state: absent
+      with_items:
+        - { bin: 'kube-scheduler' }
+        - { bin: 'kube-controller-manager' }
+        - { bin: 'kube-apiserver' }
+
+    - name: 删除证书文件
+      file:
+        path: /etc/ssl/kubernetes
+        state: absent
+
+- hosts: etcd
+  remote_user: root
+  tasks:
+    - name: 停止程序
+      service:
+        name: etcd
+        state: stopped
+
+    - name: 删除相关目录
+      file:
+        path: '{{ item.path }}'
+        state: absent
+      with_items:
+        - { path: '/etc/etcd' }
+        - { path: '/var/lib/etcd' }
+
+    - name: 删除启动项文件
+      file:
+        path: /usr/lib/systemd/system/etcd.service
+        state: absent
+
+    - name: 删除二进制文件
+      file:
+        path: /usr/bin/{{ item.bin }}
+        state: absent
+      with_items:
+        - { bin: 'etcd' }
+        - { bin: 'etcdctl' }
+
+    - name: 删除证书文件
+      file:
+        path: /etc/ssl/etcd
+        state: absent
