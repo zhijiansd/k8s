@@ -1,0 +1,22 @@
+apiVersion: kubeproxy.config.k8s.io/v1alpha1
+kind: KubeProxyConfiguration
+hostnameOverride: {{ ansible_hostname }}
+bindAddress: {{ ansible_default_ipv4.address }}
+clusterCIDR: {{ cluster_cidr }}
+clientConnection:
+    burst: 200
+    kubeconfig: {{ config_dir }}/{{ proxy_kubeconfig }}
+    qps: 100
+configSyncPeriod: 15m
+conntrack:
+    maxPerCore: 32768
+    min: 131072
+    TcpTimeoutCloseWait: 1h
+    TcpTimeout: 24h 
+healthzBindAddress: 127.0.0.1
+healthzPort: 10256
+metricsBindAddress: 127.0.0.1
+metricsPort: 10249
+mode: "ipvs"
+ipvsSyncPeriod: 30s
+udpTimeout: 250ms
