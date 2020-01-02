@@ -1,0 +1,34 @@
+- name: 复制文件
+  vars:
+    localdir: /{{ local_dir }}/kubernetes/server/bin
+    bin_dir: /usr/bin
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: 755
+  with_items:
+    - { src: '{{ localdir }}/kube-controller-manager', dest: '{{ bin_dir }}' }
+
+- name: 复制 kube-controller-manager.service
+  template:
+          src: kube-controller-manager.service.j2
+          dest: /usr/lib/systemd/system/kube-controller-manager.service
+
+- name: 复制 kube-controller-manager 配置文件
+  template:
+          src: controller-manager.j2
+          dest: "{{ config_dir }}/{{ config_file }}"
+
+- name: 新建日志文件
+  file:
+    path: "{{ log_dir }}/{{ log_file }}"
+    state: touch
+
+- name: 重载
+  command: systemctl daemon-reload
+
+- name: 启动kube-controller-manager
+  service:
+          name: kube-controller-manager
+          state: started
+          enabled: yes

@@ -1,0 +1,19 @@
+KUBE_LOGTOSTDERR="--logtostderr=true"
+KUBE_LOG_LEVEL="--v=0"
+KUBE_ADDRESSES="--bind-address=127.0.0.1"
+KUBE_CONTROLLER_MANAGER_PORT="--secure-port=10257"
+
+KUBE_CLUSTER_SIGINING_CERT_FILE="--cluster-signing-cert-file={{ cert_dir }}/{{ ca_certfile }}"
+KUBE_CLUSTER_SIGINING_KEY_FILE="--cluster-signing-key-file={{ cert_dir }}/{{ ca_keyfile }}"
+KUBE_CONTROLLER_MANAGER_ROOT_CA_FILE="--root-ca-file={{ cert_dir }}/{{ ca_certfile }}"
+KUBE_CONTROLLER_MANAGER_CLIENT_CA_FILE="--client-ca-file={{ cert_dir }}/{{ ca_certfile }}"
+KUBE_CONTROLLER_MANAGER_SERVICE_ACCOUNT_PRIVATE_KEY_FILE="--service-account-private-key-file={{ cert_dir }}/{{ ca_keyfile }}"
+
+KUBE_CONTROLLER_MANAGER_TLS_CERT_FILE="--tls-cert-file={{ cert_dir }}/{{ controller_manager_certfile }}"
+KUBE_CONTROLLER_MANAGER_TLS_PRIVATE_KEY_FILE="--tls-private-key-file={{ cert_dir }}/{{ controller_manager_keyfile }}"
+
+KUBE_SERVICE_ADDRESSES="--service-cluster-ip-range={{ cluster_cidr }}"
+KUBE_LEADER_ELECT="--leader-elect=true --leader-elect-lease-duration=15s --leader-elect-renew-deadline=10s --leader-elect-retry-period=2s"
+KUBE_LOG_ARGS="--log-dir={{ log_dir }} --log-file={{ log_dir }}/{{ log_file }} --log-file-max-size=1800 --log-flush-frequency=5s"
+
+KUBE_CONTROLLER_MANAGER_ARGS="--cluster-name={{ cluster_name }} --controllers=*,bootstrapsigner,tokencleaner --deployment-controller-sync-period=30s --experimental-cluster-signing-duration=87600h --enable-garbage-collector=true --concurrent-gc-syncs=20 --kube-api-burst=300 --kube-api-qps=200 --kubeconfig={{ config_dir }}/{{ controller_manager_kubeconfig }} --terminated-pod-gc-threshold=125 --feature-gates=RotateKubeletServerCertificate=true --use-service-account-credentials=true"

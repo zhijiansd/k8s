@@ -1,0 +1,16 @@
+local_dir: "root"
+bin_dir: "/usr/bin"
+config_dir: "/etc/kubernetes"
+config_file: "controller-manager"
+cert_dir: "/etc/ssl/kubernetes"
+controller_manager_kubeconfig: "kube-controller-manager.kubeconfig"
+cluster_cidr: "10.244.0.0/16"
+
+ca_certfile: "ca.pem"
+ca_keyfile: "ca-key.pem"
+controller_manager_certfile: "controller-manager.pem"
+controller_manager_keyfile: "controller-manager-key.pem"
+
+log_dir: "/var/log/kubernetes"
+cluster_name: "kubernetes"
+log_file: "controller-manager.log"
