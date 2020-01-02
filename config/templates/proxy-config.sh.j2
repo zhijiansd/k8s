@@ -1,0 +1,46 @@
+#!/bin/bash
+config()
+{
+cd /{{ remote_dir }}
+
+## 设置集群参数
+kubectl config set-cluster {{ cluster_name }} \
+  --certificate-authority={{ ssl_path }}/{{ ca_file }} \
+  --embed-certs=true \
+  --server={{ apiserver }} \
+  --kubeconfig={{ kube_proxy }}
+
+## 设置客户端认证参数
+kubectl config set-credentials kube-proxy \
+  --client-certificate={{ ssl_path }}/{{ kube_proxy_file }} \
+  --client-key={{ ssl_path }}/{{ kube_proxy_key_file }} \
+  --embed-certs=true \
+  --kubeconfig={{ kube_proxy }}
+
+## 设置上下文参数
+kubectl config set-context default \
+  --cluster={{ cluster_name }} \
+  --user=kube-proxy \
+  --kubeconfig={{ kube_proxy }}
+  
+## 设置默认上下文
+kubectl config use-context default --kubeconfig={{ kube_proxy }}
+}
+
+copy-config()
+{
+  NODE={{ node }}
+  for node_name in ${NODE[@]}
+  do
+    echo ">>> ${node_name}"
+    scp {{ kube_proxy }} root@${node_name}:{{ kube_dir }}
+  done
+}
+
+##配置 kube-proxy.kubeconfig
+LOCAL_ADDRESS=`ip addr|grep secondary|awk '{print $2}'|cut -c 1-15`
+if [ $LOCAL_ADDRESS == {{ vip }} ];
+then
+    config
+    copy-config
+fi
