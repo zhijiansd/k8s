@@ -1,0 +1,14 @@
+- name: 复制 tls-bootstrapping.yaml
+  template:
+         src: tls-bootstrapping.yaml.j2
+         dest: "{{ config_dir }}/{{ tls_bootstrapping }}"
+
+- name: 复制 auth.sh
+  template:
+         src: auth.sh.j2
+         dest: "/{{ remote_dir }}/auth.sh"
+         mode: 755
+
+- name: 配置赋予相应权限
+  shell: /bin/bash /{{ remote_dir }}/auth.sh
+  when: ansible_ens33.ipv4_secondaries[0].address == "192.168.100.150"
