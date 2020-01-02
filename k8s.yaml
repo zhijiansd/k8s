@@ -1,23 +1,26 @@
-- hosts: master,node
+- hosts: etcd,master,node
   remote_user: root
-  tasks:
-   - name: 关闭Selinux
-     lineinfile:
-               path: /etc/selinux/config
-               regexp: '^SELINUX='
-               line: 'SELINUX=disabled'
+  gather_facts: no
+  roles:
+      - allhosts
 
-   - name: 关闭Firewall
-     service: 
-            name: firewalld 
-            state: stopped 
-            enabled: no
-   
-- hosts: master,node
+- hosts: etcd
   remote_user: root
   roles:
-       - ssl
        - etcd
+
+- hosts: master,node
+  remote_user: root
+  gather_facts: no
+  tasks:
+    - name: 新建工作目录
+      file: 
+        path: /etc/kubernetes
+        state: directory
+    - name: 新建日志文件目录
+      file: 
+        path: /var/log/kubernetes
+        state: directory
 
 - hosts: master
   remote_user: root
@@ -27,12 +30,23 @@
        - config
        - controller-manager
        - scheduler
-       - master-other
+       - master-auth
+
+- hosts: node
+  remote_user: root
+  vars:
+    system_version: 7
+    containerd_version: "1.2.6-3.3.el7"
+  tasks:
+    - name: 安装 docker
+      yum: name=docker-ce state=present
+    - name: 启用 docker
+      service: name=docker.service enabled=yes state=started
 
 - hosts: node
   remote_user: root
   roles:
-       - docker
        - flanneld
        - kubelet
        - proxy
+
