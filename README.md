@@ -1,4 +1,4 @@
-# 使用ansible部署kubernetes集群
+# 使用Ansible部署Kubernetes集群
 
 ## 节点规划
 
@@ -16,6 +16,53 @@
 |系统版本 |Cfssl版本 |Etccd版本|Flannel版本|Keepalived版本|Haproxy版本|Kubernetes版本|
 |:-------|---------:|--------:|----------:|------------:|----------:|:------------:|
 |Centos 8|  v1.4.1  | v3.3.18 |  v0.11.0  |   2.0.19    |   2.1.0   |    v1.17.0   |
+
+## 安装ansible
+
+```bash
+# yum -y install ansible
+# egrep -v "^#|^$" /etc/ansible/hosts
+[etcd]
+192.168.100.136  hostname=etcd1
+192.168.100.137  hostname=etcd2
+192.168.100.138  hostname=etcd3
+[master]
+192.168.100.139  hostname=master1
+192.168.100.140  hostname=master2
+192.168.100.141  hostname=master3
+[node]
+192.168.100.142  hostname=node1
+192.168.100.143  hostname=node2
+192.168.100.144  hostname=node3
+[etcd:vars] 
+ansible_ssh_user="root" 
+ansible_ssh_pass="wangzhijian"
+[master:vars] 
+ansible_ssh_user="root" 
+ansible_ssh_pass="wangzhijian"
+[node:vars] 
+ansible_ssh_user="root" 
+ansible_ssh_pass="wangzhijian"
+```
+
+## 生成SSH认证所需的公钥和私钥文件
+
+```bash
+ssh-keygen -t rsa -P ''
+```
+
+## 复制hosts
+
+```bash
+ansible all -m copy -a "src=/etc/hosts dest=/etc/hosts"
+```
+
+## 签署证书
+
+```bash
+source cfssl.sh
+ansible-playbook ssl.yaml
+```
 
 ---
 使用ansible-playbook命令部署集群
