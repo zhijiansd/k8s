@@ -10,7 +10,10 @@
         - { name: 'kube-proxy' }
         - { name: 'flanneld' }
         - { name: 'docker' }
-    
+
+    - name: 删除软链接
+      shell: rm -rf /etc/systemd/system/docker.service.requires/flanneld.service
+
     - name: 卸载 docker
       yum:
         name: docker
