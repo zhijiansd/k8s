@@ -9,29 +9,30 @@
 + 192.168.100.138
 ---
 
-Master节点
+### Master节点
 ---
 + 192.168.100.139
 + 192.168.100.140
 + 192.168.100.141
-
 ---
-Node节点
+
+### Node节点
 ---
 + 192.168.100.142
 + 192.168.100.143
 + 192.168.100.144
-
 ---
-VIP
+
+### VIP
 ---
 + 192.168.100.150
+---
 
-注: Master节点使用Keepalived+Haproxy进行高可用负载均衡
+> 注: Master节点使用Keepalived+Haproxy进行高可用负载均衡
 + Keepalived对Master节点的kube-apiserver提供高可用VIP服务
 + Haproxy监听VIP并连接kube-apiserver提供负载均衡服务，所有组件通过开放的8443端口访问
 
-规划
+### 规划
 ---
 1. 使用centos 7.4版本制作
 2. 所有节点均部署etcd，版本etcd-v3.3.8
