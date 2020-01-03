@@ -12,15 +12,11 @@
 + Keepalived对Master节点的kube-apiserver提供高可用VIP服务
 + Haproxy监听VIP对kube-apiserver提供负载均衡服务，所有组件通过开放的8443端口访问
 
-### 规划
----
-1. 使用centos 7.4版本制作
-2. 所有节点均部署etcd，版本etcd-v3.3.8
-3. 在ansible主机生成ssl证书，并将所有证书放在了/root/ssl下(这里我将所有证书分发至所有节点，但是实际有些证书相应节点并不需要，特此说明)
-4. kubernetes二进制包以及压缩后的文件夹均位于/root/下，版本v1.11.1
-5. 在node节点部署flannel，版本flannel-v0.10.0
-6. keepalived和haproxy部署在master节点，版本分别为keepalived-2.0.2和haproxy-1.5.18
-7. 以上规划都能在k8s.yaml文件上有所体现
+### 应用规划
+|系统版本 |Etccd版本|Flannel版本|Keepalived版本|Haproxy版本|Kubernetes版本|
+|:-------|--------:|----------:|------------:|----------:|:------------:|
+|Centos 8| v3.3.18 |  v0.11.0  |   2.0.19    |   2.1.0   |    v1.17.0   |
+
 ---
 使用ansible-playbook命令部署集群
 ---
