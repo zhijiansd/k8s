@@ -38,11 +38,6 @@
           src: docker.service.j2
           dest: /usr/lib/systemd/system/docker.service
           
-- name: 复制 docker 启动项
-  template:
-          src: docker.service.j2
-          dest: /usr/lib/systemd/system/docker.service
-
 - name: 重载
   command: systemctl daemon-reload
 
