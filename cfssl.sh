@@ -56,7 +56,7 @@ if [ ! -f ${CONFIG} ]; then
                     "client auth"
                 ]
             },
-            "client": {
+            "etcd-client": {
                 "expiry": "87600h",
                 "usages": [
                     "signing",
@@ -284,7 +284,7 @@ fi
 if [ ! -f ${CLIENT_CSR} ]; then
    cat << EOF > ${CLIENT_CSR}
 {
-    "CN": "client",
+    "CN": "etcd-client",
     "hosts": [],
     "key": {
         "algo": "rsa",
@@ -335,7 +335,7 @@ ${ETCD_CSR} | cfssljson -bare ${ETCD_BARENAME} > /dev/null 2>&1
 
 # 为 etcd client 生成密钥和证书
 cfssl gencert -ca=ca.pem -ca-key=ca-key.pem \
---config=${CONFIG} -profile=client \
+--config=${CONFIG} -profile=etcd-client \
 ${CLIENT_CSR} | cfssljson -bare ${CLIENT_BARENAME} > /dev/null 2>&1
 
 
