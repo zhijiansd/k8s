@@ -1,6 +1,8 @@
 # 使用Ansible部署Kubernetes集群
 
-## 节点规划
+---
+节点规划
+---
 
 |    Etcd节点   |   Master节点   |   Node节点    |      VIP      |
 |:-------------:|:-------------:|:-------------:|:-------------:|
@@ -12,12 +14,19 @@
 + Keepalived对Master节点的kube-apiserver提供高可用VIP服务
 + Haproxy监听VIP对kube-apiserver提供负载均衡服务，所有组件通过开放的8443端口访问
 
-### 应用规划
-|系统版本 |Cfssl版本 |Etccd版本|Flannel版本|Keepalived版本|Haproxy版本|Kubernetes版本|
+---
+应用规划
+---
+
+|系统版本 |Cfssl版本 |Etccd版本|Flannel版本|Keepalived版本|Haproxy版本 |Kubernetes版本|
 |:-------|---------:|--------:|----------:|------------:|----------:|:------------:|
 |Centos 8|  v1.4.1  | v3.3.18 |  v0.11.0  |   2.0.19    |   2.1.0   |    v1.17.0   |
 
-## 安装ansible
+> 注: 该版将需要更改的的配置进行变量化配置，更改项主要在"defaults/main.yaml"、"tasks/main.yaml"这两个文件中，cfssl安装在ansible主机，kubernetes压缩在ansible主机，其他应用下载压缩包在ansible主机即可。
+
+---
+安装ansible
+---
 
 ```bash
 # yum -y install ansible
@@ -45,13 +54,17 @@ ansible_ssh_user="root"
 ansible_ssh_pass="wangzhijian"
 ```
 
-## 生成SSH认证所需的公钥和私钥文件
+---
+生成SSH认证所需的公钥和私钥文件
+---
 
 ```bash
 ssh-keygen -t rsa -P ''
 ```
 
-## 复制hosts
+---
+复制hosts
+---
 
 ```bash
 ansible all -m copy -a "src=/etc/hosts dest=/etc/hosts"
@@ -79,6 +92,7 @@ ansible-playbook k8s.yaml
 ---
 查看集群状况
 ---
+
 ```bash
 # ansible 192.168.100.136 -a "etcdctl --endpoints=https://192.168.100.136:2379 ls /kube/network/subnets"
 192.168.100.136 | CHANGED | rc=0 >>
