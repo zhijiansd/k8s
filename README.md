@@ -57,7 +57,9 @@ ssh-keygen -t rsa -P ''
 ansible all -m copy -a "src=/etc/hosts dest=/etc/hosts"
 ```
 
-## 签署证书
+---
+签署证书
+---
 
 ```bash
 source cfssl.sh
@@ -65,36 +67,50 @@ ansible-playbook ssl.yaml
 ```
 
 ---
-使用ansible-playbook命令部署集群
+部署集群
 ---
+
 ```bash
-# git clone https://github.com/zhijiansd/ansible-k8s.git
-# mkdir -pv /etc/ansible/roles/
-# cp -R ansible-k8s/* /etc/ansible/roles/
-# ansible-playbook k8s.yaml
+ansible-playbook k8s.yaml
 ```
+
+> 注:最新的docker需要安装containerd.io，强烈建议下载相应版本后传输到节点进行本地安装，直接下载可能会被墙。
+
 ---
 查看集群状况
 ---
 ```bash
-# ansible 192.168.100.181 -a "etcdctl --endpoints=https://192.168.100.181:2379 ls /kube/network/subnets"
-192.168.100.181 | SUCCESS | rc=0 >>
-/kube/network/subnets/10.244.95.0-24
-/kube/network/subnets/10.244.72.0-24
-/kube/network/subnets/10.244.62.0-24
-# ansible 192.168.100.181 -a "kubectl get cs"
-192.168.100.181 | SUCCESS | rc=0 >>
+# ansible 192.168.100.136 -a "etcdctl --endpoints=https://192.168.100.136:2379 ls /kube/network/subnets"
+192.168.100.136 | CHANGED | rc=0 >>
+/kube/network/subnets/10.244.13.0-24
+/kube/network/subnets/10.244.102.0-24
+/kube/network/subnets/10.244.10.0-24
+
+# ansible 192.168.100.139 -a "kubectl cluster-info"
+192.168.100.139 | CHANGED | rc=0 >>
+Kubernetes master is running at https://192.168.100.150:8443
+
+# ansible 192.168.100.139 -a "kubectl get cs"
+192.168.100.139 | CHANGED | rc=0 >>
 NAME                 STATUS    MESSAGE             ERROR
 scheduler            Healthy   ok                  
 controller-manager   Healthy   ok                  
-etcd-1               Healthy   {"health":"true"}   
-etcd-4               Healthy   {"health":"true"}   
 etcd-0               Healthy   {"health":"true"}   
-etcd-3               Healthy   {"health":"true"}   
 etcd-2               Healthy   {"health":"true"}   
-# ansible 192.168.100.181 -a "kubectl get nodes"
-192.168.100.181 | SUCCESS | rc=0 >>
-NAME      STATUS    ROLES     AGE       VERSION
-node01    Ready     <none>    1h        v1.11.1
-node02    Ready     <none>    1h        v1.11.1
-node03    Ready     <none>    1h        v1.11.1
+etcd-1               Healthy   {"health":"true"}   
+
+# ansible 192.168.100.139 -a "kubectl get nodes"
+192.168.100.139 | CHANGED | rc=0 >>
+NAME    STATUS   ROLES    AGE   VERSION
+node1   Ready    <none>   19h   v1.17.0
+node2   Ready    <none>   19h   v1.17.0
+node3   Ready    <none>   19h   v1.17.0
+```
+
+---
+清理集群
+---
+
+```bash
+ansible-playbook clean-cluster.yaml
+```
