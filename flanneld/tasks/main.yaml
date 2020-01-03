@@ -45,8 +45,15 @@
 
 - name: 重载
   command: systemctl daemon-reload
+
 - name: 启动 flannel
   service:
           name: flanneld
           state: started
+          enabled: yes
+
+- name: 重启 docker
+  service:
+          name: docker
+          state: restarted
           enabled: yes
