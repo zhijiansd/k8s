@@ -1,7 +1,7 @@
 KUBE_LOGTOSTDERR="--logtostderr=true"
 KUBE_LOG_LEVEL="--v=0"
 
-KUBE_ADDRESSES="--bind-address=127.0.0.1"
+KUBE_ADDRESSES="--bind-address={{ ansible_default_ipv4.address }}"
 KUBE_SCHEDULER_PORT="--secure-port=10259"
 
 KUBE_SCHEDULER_TLS_CERT_FILE="--tls-cert-file={{ cert_dir }}/{{ scheduler_certfile }}"
