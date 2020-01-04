@@ -11,9 +11,10 @@ KUBE_CONTROLLER_MANAGER_SERVICE_ACCOUNT_PRIVATE_KEY_FILE="--service-account-priv
 
 KUBE_CONTROLLER_MANAGER_TLS_CERT_FILE="--tls-cert-file={{ cert_dir }}/{{ controller_manager_certfile }}"
 KUBE_CONTROLLER_MANAGER_TLS_PRIVATE_KEY_FILE="--tls-private-key-file={{ cert_dir }}/{{ controller_manager_keyfile }}"
+KUBE_CONTROLLER_MANAGER_CONFIG="--kubeconfig={{ config_dir }}/{{ controller_manager_kubeconfig }} --authentication-kubeconfig={{ config_dir }}/{{ controller_manager_kubeconfig }} --authorization-kubeconfig={{ config_dir }}/{{ controller_manager_kubeconfig }}"
 
 KUBE_SERVICE_ADDRESSES="--service-cluster-ip-range={{ cluster_cidr }}"
 KUBE_LEADER_ELECT="--leader-elect=true --leader-elect-lease-duration=15s --leader-elect-renew-deadline=10s --leader-elect-retry-period=2s"
 KUBE_LOG_ARGS="--log-dir={{ log_dir }} --log-file={{ log_dir }}/{{ log_file }} --log-file-max-size=1800 --log-flush-frequency=5s"
 
-KUBE_CONTROLLER_MANAGER_ARGS="--cluster-name={{ cluster_name }} --controllers=*,bootstrapsigner,tokencleaner --deployment-controller-sync-period=30s --experimental-cluster-signing-duration=87600h --enable-garbage-collector=true --concurrent-gc-syncs=20 --kube-api-burst=300 --kube-api-qps=200 --kubeconfig={{ config_dir }}/{{ controller_manager_kubeconfig }} --terminated-pod-gc-threshold=125 --feature-gates=RotateKubeletServerCertificate=true --use-service-account-credentials=true"
+KUBE_CONTROLLER_MANAGER_ARGS="--cluster-name={{ cluster_name }} --controllers=*,bootstrapsigner,tokencleaner --deployment-controller-sync-period=30s --experimental-cluster-signing-duration=87600h --enable-garbage-collector=true --concurrent-gc-syncs=20 --kube-api-burst=300 --kube-api-qps=200 --terminated-pod-gc-threshold=125 --feature-gates=RotateKubeletServerCertificate=true --use-service-account-credentials=true"
