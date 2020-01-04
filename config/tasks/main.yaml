@@ -71,8 +71,6 @@
       mode: 755
 - name: 创建 kubelet-config 并分发至其他 node 节点
   shell: /bin/bash /{{ remote_dir }}/kubelet-config.sh
-  when: ansible_ens33.ipv4_secondaries[0].address == "192.168.100.150"
-  ignore_errors: yes
 
 - name: 复制 proxy-config.sh 脚本文件
   template:
@@ -81,6 +79,4 @@
       mode: 755
 - name: 创建 proxy-config 并分发至 node 节点
   shell: /bin/bash /{{ remote_dir }}/proxy-config.sh
-  when: ansible_ens33.ipv4_secondaries[0].address == "192.168.100.150"
-  ignore_errors: yes
 
