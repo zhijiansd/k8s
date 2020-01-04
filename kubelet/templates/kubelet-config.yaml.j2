@@ -42,7 +42,7 @@ eventBurst: 5
 failSwapOn: false
 fileCheckFrequency: 20s
 hairpinMode: "promiscuous-bridge"
-healthzBindAddress: 127.0.0.1
+healthzBindAddress: {{ ansible_default_ipv4.address }}
 healthzPort: 10248
 hostnameOverride: {{ ansible_hostname }}
 httpCheckFrequency: 20s
