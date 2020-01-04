@@ -6,7 +6,7 @@ kubectl create clusterrolebinding kubelet-bootstrap \
   --group=system:bootstrappers
 
 ## 配置 Approval controller 审批控制器
-kubectl create -f "{{ config_dir }}/{{ tls_bootstrapping }}"
+kubectl create -f {{ config_dir }}/{{ tls_bootstrapping }}
 
 ## 授权 CN=kubernetes 的客户端证书连接到 kubelet API
 kubectl create clusterrolebinding apiserver-kubelet-api-admin \
