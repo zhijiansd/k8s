@@ -1,6 +1,6 @@
 KUBE_LOGTOSTDERR="--logtostderr=true"
 KUBE_LOG_LEVEL="--v=0"
-KUBE_ADDRESSES="--bind-address=127.0.0.1"
+KUBE_ADDRESSES="--bind-address={{ ansible_default_ipv4.address }}"
 KUBE_CONTROLLER_MANAGER_PORT="--secure-port=10257"
 
 KUBE_CLUSTER_SIGINING_CERT_FILE="--cluster-signing-cert-file={{ cert_dir }}/{{ ca_certfile }}"
