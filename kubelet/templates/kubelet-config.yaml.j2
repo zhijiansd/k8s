@@ -5,11 +5,11 @@ authentication:
     x509:
          clientCAFile: {{ cert_dir }}/{{ ca_certfile }}
     webhook:
-            enabled: false
+            enabled: true
     anonymous:
            enabled: false
 authorization:
-    mode: AlwaysAllow
+    mode: Webhook
 cgroupDriver: cgroupfs
 cgroupRoot: ""
 cgroupsPerQOS: true
