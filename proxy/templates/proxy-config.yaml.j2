@@ -13,9 +13,9 @@ conntrack:
     min: 131072
     TcpTimeoutCloseWait: 1h
     TcpTimeout: 24h 
-healthzBindAddress: 127.0.0.1
+healthzBindAddress: {{ ansible_default_ipv4.address }}
 healthzPort: 10256
-metricsBindAddress: 127.0.0.1
+metricsBindAddress: {{ ansible_default_ipv4.address }}
 metricsPort: 10249
 mode: "ipvs"
 ipvsSyncPeriod: 30s
