@@ -4,6 +4,7 @@ config_dir: "/etc/kubernetes"
 config_file: "scheduler"
 
 cert_dir: "/etc/ssl/kubernetes"
+ca_file: "ca.pem"
 scheduler_certfile: "scheduler.pem"
 scheduler_keyfile: "scheduler-key.pem"
 log_dir: "/var/log/kubernetes"
