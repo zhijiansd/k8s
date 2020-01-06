@@ -19,6 +19,8 @@ SCHEDULER_CSR='scheduler-csr.json'
 PROXY_CSR='proxy-csr.json'
 ETCD_CSR='etcd-csr.json'
 CLIENT_CSR='etcd-client-csr.json'
+METRICS_SERVER_CSR='metrics-server-csr.json'
+DASHBOARD_CSR='dashboard-csr.json'
 
 API_BARENAME='apiserver'
 ADMIN_BARENAME='admin'
@@ -27,6 +29,8 @@ SCHEDULER_BARENAME='scheduler'
 PROXY_BARENAME='proxy'
 ETCD_BARENAME='etcd'
 CLIENT_BARENAME='etcd-client'
+METRICS_SERVER_BARENAME='metrics-server'
+DASHBOARD_BARENAME='dashboard'
 
 ## 生成CA文件
 
@@ -251,7 +255,55 @@ if [ ! -f ${PROXY_CSR} ]; then
 EOF
 fi
 
-# 创建用来为 etcd server 生成密钥和证书的 JSON 配置文件
+# 创建用来为 metrics-server 生成密钥和证书的 JSON 配置文件
+
+if [ ! -f ${METRICS_SERVER_CSR} ]; then
+   cat << EOF > ${METRICS_SERVER_CSR}
+{
+    "CN": "aggregator",
+    "hosts": [],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "CN",
+            "L": "BeiJing",
+            "ST": "BeiJing",
+            "O": "k8s",
+            "OU": "metrics server"
+        }
+    ]
+}
+EOF
+fi
+
+# 创建用来为 kubernetes-dashboard 生成密钥和证书的 JSON 配置文件
+
+if [ ! -f ${DASHBOARD_CSR} ]; then
+   cat << EOF > ${DASHBOARD_CSR}
+{
+    "CN": "kubernetes dashboard",
+    "hosts": [],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "CN",
+            "L": "BeiJing",
+            "ST": "BeiJing",
+            "O": "k8s",
+            "OU": "kubernetes dashboard"
+        }
+    ]
+}
+EOF
+fi
+
+# 创建用来为 etcd-server 生成密钥和证书的 JSON 配置文件
 
 if [ ! -f ${ETCD_CSR} ]; then
    cat << EOF > ${ETCD_CSR}
@@ -272,19 +324,19 @@ if [ ! -f ${ETCD_CSR} ]; then
             "L": "BeiJing",
             "ST": "BeiJing",
             "O": "k8s",
-            "OU": "etcd"
+            "OU": "etcd cluster"
         }
     ]
 }
 EOF
 fi
 
-# 创建用来为 etcd client 生成密钥和证书的 JSON 配置文件
+# 创建用来为 etcd-client 生成密钥和证书的 JSON 配置文件
 
 if [ ! -f ${CLIENT_CSR} ]; then
    cat << EOF > ${CLIENT_CSR}
 {
-    "CN": "etcd-client",
+    "CN": "etcd client",
     "hosts": [],
     "key": {
         "algo": "rsa",
@@ -296,7 +348,7 @@ if [ ! -f ${CLIENT_CSR} ]; then
             "L": "BeiJing",
             "ST": "BeiJing",
             "O": "k8s",
-            "OU": "etcd"
+            "OU": "etcd client"
         }
     ]
 }
@@ -328,12 +380,22 @@ cfssl gencert -ca=ca.pem -ca-key=ca-key.pem \
 --config=${CONFIG} -profile=kubernetes \
 ${PROXY_CSR} | cfssljson -bare ${PROXY_BARENAME} > /dev/null 2>&1 
 
-# 为 etcd server 生成密钥和证书
+# 为 Metrics-server 生成密钥和证书
+cfssl gencert -ca=ca.pem -ca-key=ca-key.pem \
+--config=${CONFIG} -profile=kubernetes \
+${METRICS_SERVER_CSR} | cfssljson -bare ${METRICS_SERVER_BARENAME} > /dev/null 2>&1 
+
+# 为 Kubernetes-dashboard 生成密钥和证书
+cfssl gencert -ca=ca.pem -ca-key=ca-key.pem \
+--config=${CONFIG} -profile=kubernetes \
+${DASHBOARD_CSR} | cfssljson -bare ${DASHBOARD_BARENAME} > /dev/null 2>&1 
+
+# 为 etcd-server 生成密钥和证书
 cfssl gencert -ca=ca.pem -ca-key=ca-key.pem \
 --config=${CONFIG} -profile=etcd \
 ${ETCD_CSR} | cfssljson -bare ${ETCD_BARENAME} > /dev/null 2>&1
 
-# 为 etcd client 生成密钥和证书
+# 为 etcd-client 生成密钥和证书
 cfssl gencert -ca=ca.pem -ca-key=ca-key.pem \
 --config=${CONFIG} -profile=etcd-client \
 ${CLIENT_CSR} | cfssljson -bare ${CLIENT_BARENAME} > /dev/null 2>&1
