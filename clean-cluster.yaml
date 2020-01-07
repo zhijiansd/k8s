@@ -86,6 +86,8 @@
         - { path: '/etc/keepalived' }
         - { path: '/var/log/kubernetes' }
         - { path: '/etc/kubernetes' }
+        - { path: '/root/.kube' }
+
 
     - name: 删除启动项文件
       file:
