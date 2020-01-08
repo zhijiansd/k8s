@@ -17,4 +17,9 @@ KUBE_SERVICE_ADDRESSES="--service-cluster-ip-range={{ cluster_cidr }}"
 KUBE_LEADER_ELECT="--leader-elect=true --leader-elect-lease-duration=15s --leader-elect-renew-deadline=10s --leader-elect-retry-period=2s"
 KUBE_LOG_ARGS="--log-dir={{ log_dir }} --log-file={{ log_dir }}/{{ log_file }} --log-file-max-size=1800 --log-flush-frequency=5s"
 
+REQUESTHEADER_ALLOWED_NAMES="--requestheader-allowed-names"
+REQUESTHEADER_CLIENT_CA_FILE="--requestheader-client-ca-file={{ cert_dir }}/{{ ca_certfile }}"
+REQUESTHEADER="--requestheader-extra-headers-prefix=X-Remote-Extra- --requestheader-group-headers=X-Remote-Group --requestheader-username-headers=X-Remote-User"
+HORIZONTAL_POD="--horizontal-pod-autoscaler-downscale-stabilization=5m --horizontal-pod-autoscaler-initial-readiness-delay=30s --horizontal-pod-autoscaler-sync-period=15s"
+
 KUBE_CONTROLLER_MANAGER_ARGS="--cluster-name={{ cluster_name }} --controllers=*,bootstrapsigner,tokencleaner --deployment-controller-sync-period=30s --experimental-cluster-signing-duration=87600h --enable-garbage-collector=true --concurrent-gc-syncs=20 --kube-api-burst=300 --kube-api-qps=200 --terminated-pod-gc-threshold=125 --feature-gates=RotateKubeletServerCertificate=true --use-service-account-credentials=true"
