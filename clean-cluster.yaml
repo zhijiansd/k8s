@@ -16,7 +16,7 @@
 
     - name: 卸载 docker
       yum:
-        name: docker
+        name: docker-ce
         state: absent
 
     - name: 删除相关目录
