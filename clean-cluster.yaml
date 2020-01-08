@@ -57,10 +57,10 @@
         state: absent
 
     - name: 删除 网桥
-      shell: ip link del docker0 && ip link del kube-ipvs0
+      shell: ip link del flannel0 && ip link del kube-ipvs0
 
     - name: 清理 iptables 规则
-      shell: iptables -F && iptables -X && sudo iptables -Z
+      shell: iptables -F && iptables -X && iptables -Z
 
 
 - hosts: master
@@ -76,6 +76,7 @@
         - { name: 'kube-scheduler' }
         - { name: 'kube-controller-manager' }
         - { name: 'kube-apiserver' }
+        - { name: 'flanneld' }
 
     - name: 删除相关目录
       file:
@@ -87,6 +88,9 @@
         - { path: '/var/log/kubernetes' }
         - { path: '/etc/kubernetes' }
         - { path: '/root/.kube' }
+        - { path: '/var/run/flannel' }
+        - { path: '/usr/libexec/flannel' }
+        - { path: '/etc/sysconfig/flanneld' }
 
 
     - name: 删除启动项文件
@@ -99,6 +103,7 @@
         - { service: 'kube-scheduler' }
         - { service: 'kube-controller-manager' }
         - { service: 'kube-apiserver' }
+        - { service: 'flanneld' }
 
     - name: 删除二进制文件
       file:
@@ -115,11 +120,18 @@
         - { bin: 'kube-scheduler' }
         - { bin: 'kube-controller-manager' }
         - { bin: 'kube-apiserver' }
+        - { bin: 'flanneld-start' }
 
     - name: 删除证书文件
       file:
         path: /etc/ssl/kubernetes
         state: absent
+
+    - name: 删除 网桥
+      shell: ip link del flannel0 
+
+    - name: 清理 iptables 规则
+      shell: iptables -F && iptables -X && iptables -Z
 
 - hosts: etcd
   remote_user: root
