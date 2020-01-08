@@ -29,6 +29,7 @@
        - keepalived-haproxy
 
 - hosts: master
+  remote_user: root
   tasks:
     - name: 等待30秒
       wait_for:
