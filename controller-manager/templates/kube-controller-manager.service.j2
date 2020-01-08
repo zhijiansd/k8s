@@ -20,6 +20,9 @@ ExecStart={{ bin_dir }}/kube-controller-manager \
             $KUBE_SERVICE_ADDRESSES \
             $KUBE_LEADER_ELECT \
             $KUBE_LOG_ARGS \
+            $REQUESTHEADER_ALLOWED_NAMES \
+            $REQUESTHEADER_CLIENT_CA_FILE \
+            $REQUESTHEADER \
             $KUBE_CONTROLLER_MANAGER_ARGS
 Restart=on-failure
 LimitNOFILE=65536
