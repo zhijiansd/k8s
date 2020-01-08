@@ -27,9 +27,20 @@
   roles:
        - apiserver
        - keepalived-haproxy
+
+- hosts: master
+  tasks:
+    - name: 等待30秒
+      wait_for:
+        timeout: 30
+
+- hosts: master
+  remote_user: root
+  roles:
        - config
        - controller-manager
        - scheduler
+       - flanneld       
        - master-auth
 
 - hosts: node
