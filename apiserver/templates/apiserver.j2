@@ -23,10 +23,12 @@ KUBELET_CLIENT_KEY="--kubelet-client-key={{ cert_dir }}/{{ apiserver_keyfile }}"
 
 PROXY_CLIENT_CERTIFICATE="--proxy-client-cert-file={{ cert_dir }}/{{ proxy_certfile }}"
 PROXY_CLIENT_KEY="--proxy-client-key-file={{ cert_dir }}/{{ proxy_keyfile }}"
+
 REQUESTHEADER_ALLOWED_NAMES="--requestheader-allowed-names=proxy"
 REQUESTHEADER_CLIENT_CA_FILE="--requestheader-client-ca-file={{ cert_dir }}/{{ ca_certfile }}"
+REQUESTHEADER="--requestheader-extra-headers-prefix=X-Remote-Extra- --requestheader-group-headers=X-Remote-Group --requestheader-username-headers=X-Remote-User"
 
 KUBE_AUDIT_LOG_ARGS="--audit-log-path={{ log_dir }}/{{ audit_log_file }} --audit-log-version=audit.k8s.io/v1 --audit-log-format=json --audit-log-maxage=180 --audit-log-maxbackup=10 --audit-log-maxsize=100 --audit-log-mode=blocking"
 KUBE_LOG_ARGS="--log-dir={{ log_dir }} --log-file={{ log_dir }}/{{ log_file }} --log-file-max-size=1800 --log-flush-frequency=5s"
 
-KUBE_API_ARGS="--allow-privileged=true --anonymous-auth=false --apiserver-count=3 --authorization-mode=Node,RBAC --default-not-ready-toleration-seconds=300 --default-unreachable-toleration-seconds=300 --delete-collection-workers=1 --enable-bootstrap-token-auth --enable-garbage-collector=true --event-ttl=1h --encryption-provider-config={{ config_dir }}/{{ encrypt_config }} --kubelet-https=true --kubelet-timeout=5s --profiling=true --service-node-port-range=30000-42767 "
+KUBE_API_ARGS="--allow-privileged=true --anonymous-auth=false --apiserver-count=3 --authorization-mode=Node,RBAC --default-not-ready-toleration-seconds=300 --default-unreachable-toleration-seconds=300 --delete-collection-workers=1 --enable-aggregator-routing --enable-bootstrap-token-auth --enable-garbage-collector=true --event-ttl=1h --encryption-provider-config={{ config_dir }}/{{ encrypt_config }} --kubelet-https=true --kubelet-timeout=5s --profiling=true --service-node-port-range=30000-42767 "
