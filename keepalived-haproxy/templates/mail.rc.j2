@@ -1,0 +1,24 @@
+set hold
+set append
+set ask
+set crt
+set dot
+set keep
+set emptybox
+set indentprefix="> "
+set quote
+set sendcharsets=iso-8859-1,utf-8
+set showname
+set showto
+set newmail=nopoll
+set autocollapse
+set markanswered
+ignore received in-reply-to message-id references
+ignore mime-version content-transfer-encoding
+fwdretain subject date from to
+set bsdcompat
+set from="{{ mailx_from }}"
+set smtp="{{ mailx_smtp }}"                     ##SMTP服务器地址
+set smtp-auth-user="{{ mailx_from }}"           ##邮箱用户 
+set smtp-auth-password="{{ mailx_password }}"   ##邮箱授权码
+set smtp-auth="{{ mailx_auth }}"                ##SMTP认证方式
