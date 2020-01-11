@@ -2,6 +2,7 @@
   yum:
     name: "@Development tools"
     state: present
+
 - name : 安装keepalived其他依赖
   yum:
     name:
@@ -9,12 +10,14 @@
       - libnl3-devel
       - openssl
       - openssl-devel 
+      - mailx
     state: present
 
 - name: 复制文件
   copy: 
       src: /{{ local_dir }}/haproxy-{{ haproxy_version }}.tar.gz 
       dest: /{{ remote_dir }}/haproxy-{{ haproxy_version }}.tar.gz
+
 - name: 解压文件
   unarchive: 
            src: /{{ remote_dir }}/haproxy-{{ haproxy_version }}.tar.gz 
@@ -30,6 +33,7 @@
   template:
           src: haproxy.cfg.j2
           dest: "{{ haproxy_work_dir }}/haproxy.cfg"
+
 - name: 复制 haproxy.service
   template:
           src: haproxy.service.j2
@@ -40,6 +44,7 @@
       src: haproxy_install.sh.j2
       dest: /{{ remote_dir }}/haproxy_install.sh
       mode: 755
+
 - name: 编译安装 haproxy
   shell: /bin/bash /{{ remote_dir }}/haproxy_install.sh
 
@@ -56,6 +61,7 @@
   copy: 
       src: /{{ local_dir }}/keepalived-{{ keepalived_version }}.tar.gz 
       dest: /{{ remote_dir }}/keepalived-{{ keepalived_version }}.tar.gz
+
 - name: 解压文件
   unarchive: 
            src: /{{ remote_dir }}/keepalived-{{ keepalived_version }}.tar.gz 
@@ -72,11 +78,19 @@
       src: keepalived_install.sh.j2
       dest: /{{ remote_dir }}/keepalived_install.sh
       mode: 755
+
 - name: 复制检测脚本文件
   template:
-      src: check_haproxy.sh.j2
-      dest: "{{ keepalived_work_dir }}/check_haproxy.sh"
+      src: check_api.sh.j2
+      dest: "{{ keepalived_work_dir }}/check_api.sh"
       mode: 755
+
+- name: 复制邮件检测脚本文件
+  template:
+      src: mailx.sh.j2
+      dest: "{{ keepalived_work_dir }}/mailx.sh"
+      mode: 755
+      
 - name: 复制keepalived_config配置脚本文件
   template:
       src: keepalived_config.sh.j2
@@ -85,6 +99,7 @@
 
 - name: 编译安装 keepalived
   shell: /bin/bash /{{ remote_dir }}/keepalived_install.sh
+
 - name: 配置 keepalived.conf
   shell: /bin/bash /{{ remote_dir }}/keepalived_config.sh
 
