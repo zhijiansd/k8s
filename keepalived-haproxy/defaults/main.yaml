@@ -33,4 +33,6 @@ smtp_server: "127.0.0.1 25"
 interface: "ens33"
 vrrp_script_name: "check_api"
 vrrp_script_user: root
-vrrp_script_path: "/etc/keepalived/check_haproxy.sh"
+vrrp_script_path: "/etc/keepalived/check_api.sh"
+mailx_contact: "wangzhijiansd@163.com"
+mailx_path: "/etc/keepalived/mailx.sh"
