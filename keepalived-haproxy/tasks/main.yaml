@@ -85,6 +85,12 @@
       dest: "{{ keepalived_work_dir }}/check_api.sh"
       mode: 755
 
+- name: 复制mailx配置文件
+  template:
+      src: mail.rc.j2
+      dest: "/etc/mail.rc"
+      mode: 755
+
 - name: 复制邮件检测脚本文件
   template:
       src: mailx.sh.j2
