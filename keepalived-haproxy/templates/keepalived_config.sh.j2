@@ -101,5 +101,12 @@ vrrp_instance VI_1 {
     track_script {
         {{ vrrp_script_name }}
     }
+    ##状态为master时发送邮件脚本
+    notify_master "{{ mailx_path }} master" 
+    ##状态为backup时发送邮件脚本
+    notify_backup "{{ mailx_path }} backup" 
+    ##状态为backup时发送邮件脚本
+    notify_fault  "{{ mailx_path }} fault" 
+    
 }
 EOF
