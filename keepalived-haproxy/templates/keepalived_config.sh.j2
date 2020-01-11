@@ -70,7 +70,7 @@ global_defs {
         ##如果广告与先前收到的广告来自同一主路由器，则不会进行检查(默认:不跳过)
         vrrp_skip_check_adv_addr
 }
-vrrp_script check_haproxy {
+vrrp_script {{ vrrp_script_name }}  {
     script "{{ vrrp_script_path }}"
     ##脚本调用时间(默认1秒)
     interval 2
