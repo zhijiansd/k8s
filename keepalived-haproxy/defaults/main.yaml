@@ -31,6 +31,6 @@ notification_email2: "zhijiansd@163.com"
 email_from: "admin@wangzhijian.cn"
 smtp_server: "127.0.0.1 25"
 interface: "ens33"
-vrrp_script_name: "check_haproxy"
+vrrp_script_name: "check_api"
 vrrp_script_user: root
 vrrp_script_path: "/etc/keepalived/check_haproxy.sh"
