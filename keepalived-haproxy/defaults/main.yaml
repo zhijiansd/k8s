@@ -34,5 +34,10 @@ interface: "ens33"
 vrrp_script_name: "check_api"
 vrrp_script_user: root
 vrrp_script_path: "/etc/keepalived/check_api.sh"
+
+mailx_from: "wangzhijiansd@qq.com"
+mailx_smtp: "smtp.qq.com"
+mailx_password: "abcdef"
+mailx_auth: "login"
 mailx_contact: "wangzhijiansd@163.com"
 mailx_path: "/etc/keepalived/mailx.sh"
