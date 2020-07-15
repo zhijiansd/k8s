@@ -3,6 +3,7 @@ global
 	ulimit-n	20032
         stats socket    /var/run/haproxy.pid mode 600 level admin
         log             127.0.0.1 local0
+        user            haproxy	
         uid             200
         gid             200
         chroot          /var/empty
