@@ -18,7 +18,7 @@
 应用规划
 ---
 
-|系统版本 |CFSSL版本 |Etcd版本|Keepalived版本|Haproxy版本 |Kubernetes版本|Containerd版本|Crictl版本|
+|系统版本 |CFSSL版本 |ETCD版本|KeepAlived版本|HaProxy版本 |Kubernetes版本|Containerd版本|Crictl版本|
 |:------:|:--------:|:------:|:-----------:|:---------:|:------------:|:------------:|:--------:|
 |CentOS 8|  1.5.0   |v3.4.14 |   2.1.5     |   2.3.2   |    v1.19.5   |     1.4.3    |  v1.19.0 |
 
