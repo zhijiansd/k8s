@@ -1,6 +1,18 @@
-KUBE_LOGTOSTDERR="--logtostderr=true"
+KUBE_LOGTOSTDERR="--alsologtostderr=true --logtostderr=true"
 KUBE_LOG_LEVEL="--v=0"
 
-KUBE_ADDRESSES="--address=127.0.0.1"
-KUBE_LEADER_ELECT="--leader-elect=true"
-KUBE_SCHEDULER_ARGS="--kubeconfig=/etc/kubernetes/scheduler.kubeconfig"
+KUBE_ADDRESSES="--bind-address={{ ansible_default_ipv4.address }}"
+KUBE_SCHEDULER_PORT="--secure-port=10259"
+
+KUBE_SCHEDULER_TLS_CERT_FILE="--tls-cert-file={{ cert_dir }}/{{ scheduler_certfile }}"
+KUBE_SCHEDULER_TLS_PRIVATE_KEY_FILE="--tls-private-key-file={{ cert_dir }}/{{ scheduler_keyfile }}"
+
+KUBE_SCHEDULER_CONFIG="--authentication-kubeconfig={{ config_dir }}/{{ scheduler_kubeconfig }} --authorization-kubeconfig={{ config_dir }}/{{ scheduler_kubeconfig }}"
+KUBE_LEADER_ELECT="--leader-elect=true --leader-elect-lease-duration=15s --leader-elect-renew-deadline=10s --leader-elect-retry-period=2s"
+
+REQUESTHEADER_ALLOWED_NAMES="--requestheader-allowed-names"
+REQUESTHEADER_CLIENT_CA_FILE="--requestheader-client-ca-file={{ cert_dir }}/{{ ca_certfile }}"
+REQUESTHEADER="--requestheader-extra-headers-prefix=X-Remote-Extra- --requestheader-group-headers=X-Remote-Group --requestheader-username-headers=X-Remote-User"
+
+KUBE_LOG_ARGS="--log-dir={{ log_dir }} --log-file={{ log_dir }}/{{ log_file }} --log-file-max-size=1800 --log-flush-frequency=5s"
+KUBE_SCHEDULER_ARGS="--config={{ config_dir }}/{{ scheduler_config }}"

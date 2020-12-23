@@ -1,0 +1,45 @@
+- name: 关闭Selinux
+  lineinfile:
+        path: /etc/selinux/config
+        regexp: '^SELINUX='
+        line: 'SELINUX=disabled'
+- name: 关闭首次登录询问yes/no
+  lineinfile:
+        path: /etc/ssh/ssh_config
+        regexp: '^StrictHostKeyChecking'
+        line: 'StrictHostKeyChecking no'
+
+- name: 关闭Firewall
+  service: 
+         name: firewalld 
+         state: stopped 
+         enabled: no
+
+- name: 修改主机名
+  raw: "echo {{hostname|quote}} > /etc/hostname"
+- name: 设置主机名
+  shell: hostnamectl set-hostname {{hostname|quote}}
+
+- name: 配置互信
+  authorized_key:
+      user: root
+      key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
+      path: '/root/.ssh/authorized_keys'
+      manage_dir: no  
+      state: present
+
+- name: 生成密钥
+  shell: ssh-keygen -t rsa -P '' -f /root/.ssh/id_rsa
+- name: 将密钥从远端复制至本地
+  fetch:
+    src: .ssh/id_rsa.pub
+    dest: /tmp/ssh/
+- name: 将公钥追加到同一个文件
+  local_action: shell find /tmp/ssh/* -type f -exec sh -c 'cat {}>>/tmp/authorized_keys' \;
+- name: 分发至远端
+  copy:
+     src: /tmp/authorized_keys
+     dest: /tmp/
+- name: 在远端追加公钥
+  shell: cat /tmp/authorized_keys >> /root/.ssh/authorized_keys
+

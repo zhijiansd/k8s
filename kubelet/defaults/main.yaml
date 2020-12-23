@@ -1,0 +1,17 @@
+config_dir: "/etc/kubernetes"
+config_file: "kubelet"
+kubelet_dir: "/var/lib/kubelet"
+bin_dir: "/usr/bin"
+local_dir: "root"
+
+cert_dir: "/etc/ssl/kubernetes"
+ca_certfile: "ca.pem"
+
+log_dir: "/var/log/kubernetes"
+log_file: "kubelet.log" 
+
+container_runtime: "remote"
+container_runtime_endpoint: "unix:///run/containerd/containerd.sock"
+bootstrap_kubeconfig: "kubelet-bootstrap.kubeconfig"
+kubelet_confing: "kubelet-confing.yaml"
+kubelet_kubeconfig: "kubelet.kubeconfig"

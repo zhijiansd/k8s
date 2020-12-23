@@ -1,0 +1,10 @@
+#!/bin/bash
+## 赋予 system:bootstrappers 用户组 system:node-bootstrapper 集群角色(role)
+## 使 kubelet 有权限创建认证请求(certificate signing requests)
+kubectl create clusterrolebinding kubelet-bootstrap \
+  --clusterrole=system:node-bootstrapper \
+  --group=system:bootstrappers
+
+## 配置 Approval controller 审批控制器
+kubectl create -f {{ config_dir }}/{{ tls_bootstrapping }}
+

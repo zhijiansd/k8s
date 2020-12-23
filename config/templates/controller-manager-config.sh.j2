@@ -1,0 +1,36 @@
+#!/bin/bash
+config()
+{
+cd /{{ remote_dir }}
+
+## 设置集群参数
+kubectl config set-cluster {{ cluster_name }} \
+  --certificate-authority={{ ssl_path }}/{{ ca_file }} \
+  --embed-certs=true \
+  --server={{ apiserver }} \
+  --kubeconfig={{ kube_controller_manager }} 
+
+## 设置客户端认证参数
+kubectl config set-credentials system:kube-controller-manager \
+  --client-certificate={{ ssl_path }}/{{ kube_controller_manager_file }} \
+  --client-key={{ ssl_path }}/{{ kube_controller_manager_key_file }} \
+  --embed-certs=true \
+  --kubeconfig={{ kube_controller_manager }}
+
+## 设置关联参数
+kubectl config set-context system:kube-controller-manager \
+  --cluster={{ cluster_name }} \
+  --user=system:kube-controller-manager \
+  --kubeconfig={{ kube_controller_manager }}
+
+## 设置默认关联
+kubectl config use-context system:kube-controller-manager \
+  --kubeconfig={{ kube_controller_manager }}
+}
+
+## 配置 kube-controller-manager.kubeconfig
+LOCAL_ADDRESS=`ip addr|grep secondary|awk '{print $2}'|cut -c 1-15`
+if [ $LOCAL_ADDRESS == {{ vip }} ];
+then
+    config
+fi

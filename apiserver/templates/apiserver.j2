@@ -1,0 +1,35 @@
+KUBE_LOGTOSTDERR="--logtostderr=true --alsologtostderr=true --skip-headers=true --skip-log-headers=true"
+KUBE_LOG_LEVEL="--v=2 --stderrthreshold=2"
+
+KUBE_ETCD_SERVERS="--etcd-servers={{ etcd_endpoints }}"
+KUBE_ETCD_CAFILE="--etcd-cafile={{ cert_dir }}/{{ ca_certfile }}"
+KUBE_ETCD_CERTFILE="--etcd-certfile={{ cert_dir }}/{{ etcd_certfile }}"
+KUBE_ETCD_KEYFILE="--etcd-keyfile={{ cert_dir }}/{{ etcd_keyfile }}"
+KUBE_ETCD_CONFIG="--etcd-compaction-interval=5m --etcd-count-metric-poll-period=1m --etcd-db-metric-poll-interval=30s --etcd-prefix=/registry --storage-backend=etcd3"
+
+KUBE_API_ADDRESS="--advertise-address={{ ansible_default_ipv4.address }} --bind-address={{ ansible_default_ipv4.address }}"
+KUBE_API_PORT="--secure-port=6443"
+KUBE_SERVICE_ADDRESSES="--service-cluster-ip-range={{ cluster_cidr }}"
+
+KUBE_ENABLE_ADMISSION_PLUGINS="--enable-admission-plugins=NamespaceLifecycle,LimitRanger,ServiceAccount,TaintNodesByCondition,Priority,DefaultTolerationSeconds,DefaultStorageClass,StorageObjectInUseProtection,PersistentVolumeClaimResize,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,RuntimeClass,ResourceQuota"
+
+KUBE_API_CLIENT_CA_FILE="--client-ca-file={{ cert_dir }}/{{ ca_certfile }}"
+KUBE_API_SERVICE_ACCOUNT_KEY_FILE="--service-account-key-file={{ cert_dir }}/{{ ca_keyfile }}"
+ 
+KUBE_API_TLS_CERT_FILE="--tls-cert-file={{ cert_dir }}/{{ apiserver_certfile }}"
+KUBE_API_TLS_PRIVATE_KEY_FILE="--tls-private-key-file={{ cert_dir }}/{{ apiserver_keyfile }}"
+
+KUBELET_CLIENT_CERTIFICATE="--kubelet-client-certificate={{ cert_dir }}/{{ apiserver_certfile }}"
+KUBELET_CLIENT_KEY="--kubelet-client-key={{ cert_dir }}/{{ apiserver_keyfile }}"
+
+PROXY_CLIENT_CERTIFICATE="--proxy-client-cert-file={{ cert_dir }}/{{ proxy_certfile }}"
+PROXY_CLIENT_KEY="--proxy-client-key-file={{ cert_dir }}/{{ proxy_keyfile }}"
+
+REQUESTHEADER_ALLOWED_NAMES="--requestheader-allowed-names=proxy"
+REQUESTHEADER_CLIENT_CA_FILE="--requestheader-client-ca-file={{ cert_dir }}/{{ ca_certfile }}"
+REQUESTHEADER="--requestheader-extra-headers-prefix=X-Remote-Extra- --requestheader-group-headers=X-Remote-Group --requestheader-username-headers=X-Remote-User"
+
+KUBE_AUDIT_LOG_ARGS="--audit-log-path={{ log_dir }}/{{ audit_log_file }} --audit-log-version=audit.k8s.io/v1 --audit-log-format=json --audit-log-maxage=180 --audit-log-maxbackup=10 --audit-log-maxsize=100 --audit-log-mode=blocking --audit-log-truncate-enabled --audit-log-truncate-max-batch-size=10485760 --audit-log-truncate-max-event-size=102400"
+KUBE_LOG_ARGS="--log-dir={{ log_dir }} --log-file={{ log_dir }}/{{ log_file }} --log-file-max-size=1800 --log-flush-frequency=5s --logging-format=text"
+
+KUBE_API_ARGS="--allow-privileged=true --anonymous-auth=false --apiserver-count=3 --authorization-mode=Node,RBAC --default-not-ready-toleration-seconds=300 --default-unreachable-toleration-seconds=300 --delete-collection-workers=1 --enable-aggregator-routing --enable-bootstrap-token-auth --enable-garbage-collector=true --event-ttl=1h --encryption-provider-config={{ config_dir }}/{{ encrypt_config }} --kubelet-timeout=5s --profiling=true --service-node-port-range=30000-42767  --watch-cache=true --max-mutating-requests-inflight=200 --max-requests-inflight=400"

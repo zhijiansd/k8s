@@ -9,33 +9,31 @@
       
 - name: 复制 kube-proxy
   copy:
-      src: /root/kubernetes/server/bin/kube-proxy
-      dest: /usr/bin/
+      src: /{{ local_dir }}/kubernetes/server/bin/kube-proxy
+      dest: "{{ bin_dir }}"
       mode: 755
+
 - name: 复制 kube-proxy.service
   template:
           src: kube-proxy.service.j2
           dest: /usr/lib/systemd/system/kube-proxy.service
-
-- name: 复制 proxy
+- name: 复制 proxy 配置文件
   template:
           src: proxy.j2
-          dest: /etc/kubernetes/proxy	  
-- name: 复制 sysctl.conf
+          dest: "{{ config_dir }}/{{ config_file }}"
+
+- name: 复制 proxy-config.yaml
   template:
-          src: sysctl.conf.j2
-          dest: /etc/sysctl.conf	  
-- name: 配置 iptables 代理
-  shell: /usr/sbin/sysctl -p
-  
-- name: 复制 kube-proxy 脚本文件
-  copy:
-      src: proxy.sh
-      dest: /tmp
-      mode: 755
-- name: 配置 kube-proxy
-  shell: /bin/bash /tmp/proxy.sh
-  
+          src: proxy-config.yaml.j2
+          dest: "{{ config_dir }}/{{ proxy_confing }}"         
+- name: 新建日志文件
+  file:
+    path: "{{ log_dir }}/{{ log_file }}"
+    state: touch
+
+- name: 重载
+  command: systemctl daemon-reload
+ 
 - name: 启动 kube-proxy
   service:
           name: kube-proxy

@@ -1,8 +1,6 @@
 [Unit]
-Description=Kubernetes Kubelet Server
-Documentation=https://github.com/kubernetes/kubernetes
-After=docker.service
-Requires=docker.service
+Description=The Kubernetes Node Agent
+Documentation=https://kubernetes.io/zh/docs
 
 [Service]
 WorkingDirectory=/var/lib/kubelet
@@ -10,11 +8,13 @@ EnvironmentFile=-/etc/kubernetes/kubelet
 ExecStart=/usr/bin/kubelet \
             $KUBE_LOGTOSTDERR \
             $KUBE_LOG_LEVEL \
-            $KUBELET_ADDRESS \
             $KUBELET_HOSTNAME \
-            $KUBELET_POD_INFRA_CONTAINER \
+            $KUBELET_CONTAINER_RUNTIME \
+            $KUBE_LOG_ARGS \
             $KUBELET_ARGS
-Restart=on-failure
+Restart=always
+StartLimitInterval=0
+RestartSec=600ms
 
 [Install]
 WantedBy=multi-user.target

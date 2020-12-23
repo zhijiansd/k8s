@@ -1,0 +1,20 @@
+local_dir: root
+remote_dir: tmp
+etcd_version: "v3.4.14"
+
+bin_dir: "/usr/bin"
+work_dir: "/etc/etcd"
+config_file: "etcd.conf"
+data_dir: "/var/lib/etcd"
+cert_dir: "/etc/ssl/etcd"
+
+peer_addresses: "etcd1=https://192.168.100.136:2380,etcd2=https://192.168.100.137:2380,etcd3=https://192.168.100.138:2380"
+snapshot_count: "100000"
+heartbeat_interval: "100"
+election_timeout: "1000"
+max_txn_ops: "128"
+max_request_bytes: "1572864"
+grpc_keepalive_min_time: "5s"
+grpc_keepalive_interval: "2h"
+grpc_keepalive_timeout: "20s"
+log_level: "info"

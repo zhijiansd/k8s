@@ -1,0 +1,75 @@
+- hosts: etcd
+  remote_user: root
+  gather_facts: no
+  vars: 
+    ca_dir: /root/ssl
+    etcd_ssl_dir: /etc/ssl/etcd
+  tasks:
+    - name: 新建证书目录
+      file: path={{ etcd_ssl_dir }} state=directory
+    - name: 分发证书
+      copy:
+        src: '{{ item.src }}'
+        dest: '{{ item.dest }}'
+      with_items:
+        - { src: '{{ ca_dir }}/ca.pem', dest: '{{ etcd_ssl_dir }}' }
+        - { src: '{{ ca_dir }}/ca-key.pem', dest: '{{ etcd_ssl_dir }}' }
+        - { src: '{{ ca_dir }}/etcd.pem', dest: '{{ etcd_ssl_dir }}' }
+        - { src: '{{ ca_dir }}/etcd-key.pem', dest: '{{ etcd_ssl_dir }}' }
+    - name: 安装根证书
+      yum: state=present name=ca-certificates
+    - name: 开启根证书动态配置
+      command: update-ca-trust force-enable
+    - name: 导入自签名的根证书
+      copy: src={{ ca_dir }}/ca.pem dest=/etc/pki/ca-trust/source/anchors/
+    - name: 更新根证书
+      command: update-ca-trust extract
+
+- hosts: master
+  remote_user: root
+  gather_facts: no
+  vars: 
+    ca_dir: /root/ssl/
+    k8s_ssl_dir: /etc/ssl/kubernetes/
+  tasks:
+    - name: 新建证书目录
+      file: path={{ k8s_ssl_dir }} state=directory
+    - name: 分发证书
+      copy:
+        src: '{{ ca_dir }}'
+        dest: '{{ k8s_ssl_dir }}'
+    - name: 安装根证书
+      yum: state=present name=ca-certificates
+    - name: 开启根证书动态配置
+      command: update-ca-trust force-enable
+    - name: 导入自签名的根证书
+      copy: src={{ ca_dir }}/ca.pem dest=/etc/pki/ca-trust/source/anchors/
+    - name: 更新根证书
+      command: update-ca-trust extract
+
+- hosts: node
+  remote_user: root
+  gather_facts: no
+  vars: 
+    ca_dir: /root/ssl
+    k8s_ssl_dir: /etc/ssl/kubernetes
+  tasks:
+    - name: 新建证书目录
+      file: path={{ k8s_ssl_dir }} state=directory
+    - name: 分发证书
+      copy:
+        src: '{{ item.src }}'
+        dest: '{{ item.dest }}'
+      with_items:
+        - { src: '{{ ca_dir }}/ca.pem', dest: '{{ k8s_ssl_dir }}' }
+        - { src: '{{ ca_dir }}/ca-key.pem', dest: '{{ k8s_ssl_dir }}' }
+        - { src: '{{ ca_dir }}/proxy.pem', dest: '{{ k8s_ssl_dir }}' }
+        - { src: '{{ ca_dir }}/proxy-key.pem', dest: '{{ k8s_ssl_dir }}' }
+    - name: 安装根证书
+      yum: state=present name=ca-certificates
+    - name: 开启根证书动态配置
+      command: update-ca-trust force-enable
+    - name: 导入自签名的根证书
+      copy: src={{ ca_dir }}/ca.pem dest=/etc/pki/ca-trust/source/anchors/
+    - name: 更新根证书
+      command: update-ca-trust extract

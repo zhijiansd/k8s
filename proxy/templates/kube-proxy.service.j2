@@ -1,14 +1,13 @@
 [Unit]
 Description=Kubernetes Kube-Proxy Server
-Documentation=https://github.com/kubernetes/kubernetes
-After=network.target
+Documentation=https://kubernetes.io/zh/docs
 
 [Service]
-EnvironmentFile=-/etc/kubernetes/proxy
-ExecStart=/usr/bin/kube-proxy \
+EnvironmentFile=-{{ config_dir }}/{{ config_file }}
+ExecStart={{ bin_dir }}/kube-proxy \
             $KUBE_LOGTOSTDERR \
             $KUBE_LOG_LEVEL \
-            $NODE_HOSTNAME \
+            $KUBE_LOG_ARGS \
             $KUBE_PROXY_ARGS
 Restart=on-failure
 LimitNOFILE=65536

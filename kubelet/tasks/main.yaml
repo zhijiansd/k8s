@@ -1,26 +1,34 @@
 - name: 复制 kubelet
   copy:
-      src: /root/kubernetes/server/bin/kubelet
-      dest: /usr/bin/
+      src: /{{ local_dir }}/kubernetes/server/bin/kubelet
+      dest: "{{ bin_dir }}"
       mode: 755
+
+- name: 新建日志文件
+  file:
+    path: "{{ log_dir }}/{{ log_file }}"
+    state: touch
+- name: 新建工作目录
+  file:
+    path: "{{ kubelet_dir }}"
+    state: directory
+
 - name: 复制 kubelet.service
   template:
           src: kubelet.service.j2
           dest: /usr/lib/systemd/system/kubelet.service
+- name: 复制 kubelet 配置文件
+  template:
+          src: kubelet.j2
+          dest: "{{config_dir }}/{{ config_file }}"
+- name: 复制 kubelet-config.yaml
+  template:
+          src: kubelet-config.yaml.j2
+          dest: "{{config_dir }}/{{ kubelet_confing }}"
 
-- name: 新建日志目录
-  file:
-      path: /var/log/kube
-      state: directory
-
-- name: 复制 kubelet 脚本文件
-  copy:
-      src: kubelet.sh
-      dest: /tmp
-      mode: 755
-- name: 配置 kubelet
-  shell: /bin/bash /tmp/kubelet.sh
-  
+- name: 重载
+  command: systemctl daemon-reload
+ 
 - name: 启动 kubelet
   service:
           name: kubelet

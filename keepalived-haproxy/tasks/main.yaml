@@ -1,27 +1,119 @@
-- name: 安装 haproxy
+- name: 安装 Development Tools
   yum:
-      state: present 
-      name: haproxy
+    name: "@Development tools"
+    state: present
+
+- name : 安装keepalived其他依赖
+  yum:
+    name:
+      - ipvsadm
+      - libnl3-devel
+      - openssl
+      - openssl-devel 
+      - mailx
+    state: present
+
+- name: 复制文件
+  copy: 
+      src: /{{ local_dir }}/haproxy-{{ haproxy_version }}.tar.gz 
+      dest: /{{ remote_dir }}/haproxy-{{ haproxy_version }}.tar.gz
+
+- name: 解压文件
+  unarchive: 
+           src: /{{ remote_dir }}/haproxy-{{ haproxy_version }}.tar.gz 
+           dest: /{{ remote_dir }} 
+           copy: no
+
+- name: 新建工作目录
+  file: 
+      path: "{{ haproxy_work_dir }}"
+      state: directory
+
 - name: 复制 haproxy.cfg
   template:
           src: haproxy.cfg.j2
-          dest: /etc/haproxy/haproxy.cfg
+          dest: "{{ haproxy_work_dir }}/haproxy.cfg"
+
+- name: 复制 haproxy.service
+  template:
+          src: haproxy.service.j2
+          dest: /usr/lib/systemd/system/haproxy.service
+
+- name: 复制安装脚本文件
+  template:
+      src: haproxy_install.sh.j2
+      dest: /{{ remote_dir }}/haproxy_install.sh
+      mode: 755
+
+- name: 编译安装 haproxy
+  shell: /bin/bash /{{ remote_dir }}/haproxy_install.sh
+
+- name: 重载
+  command: systemctl daemon-reload
+
 - name: 运行 haproxy
   service:
          name: haproxy
          state: started 
          enabled: true
 
-- name: 复制检测脚本文件
-  copy:
-      src: check_haproxy.sh
-      dest: /etc/keepalived/
-      mode: 755
+- name: 复制文件
+  copy: 
+      src: /{{ local_dir }}/keepalived-{{ keepalived_version }}.tar.gz 
+      dest: /{{ remote_dir }}/keepalived-{{ keepalived_version }}.tar.gz
+
+- name: 解压文件
+  unarchive: 
+           src: /{{ remote_dir }}/keepalived-{{ keepalived_version }}.tar.gz 
+           dest: /{{ remote_dir }} 
+           copy: no
+
+- name: 新建工作目录
+  file: 
+      path: "{{ keepalived_work_dir }}"
+      state: directory
+
 - name: 复制安装脚本文件
-  copy:
-      src: install.sh
-      dest: /tmp
+  template:
+      src: keepalived_install.sh.j2
+      dest: /{{ remote_dir }}/keepalived_install.sh
       mode: 755
 
-- name: 配置并运行 keepalived
-  shell: /bin/bash /tmp/install.sh
+- name: 复制检测脚本文件
+  template:
+      src: check_api.sh.j2
+      dest: "{{ keepalived_work_dir }}/check_api.sh"
+      mode: 755
+
+- name: 复制mailx配置文件
+  template:
+      src: mail.rc.j2
+      dest: "/etc/mail.rc"
+      mode: 755
+
+- name: 复制邮件检测脚本文件
+  template:
+      src: mailx.sh.j2
+      dest: "{{ keepalived_work_dir }}/mailx.sh"
+      mode: 755
+      
+- name: 复制keepalived_config配置脚本文件
+  template:
+      src: keepalived_config.sh.j2
+      dest: /{{ remote_dir }}/keepalived_config.sh
+      mode: 755
+
+- name: 编译安装 keepalived
+  shell: /bin/bash /{{ remote_dir }}/keepalived_install.sh
+
+- name: 配置 keepalived.conf
+  shell: /bin/bash /{{ remote_dir }}/keepalived_config.sh
+
+- name: 重载
+  command: systemctl daemon-reload
+
+- name: 运行 keepalived
+  service:
+         name: keepalived
+         state: started 
+         enabled: true

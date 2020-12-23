@@ -1,7 +1,9 @@
 - name: 复制 kube-scheduler
+  vars:
+    bin_dir: /usr/bin
   copy:
-      src: /root/kubernetes/server/bin/kube-scheduler
-      dest: /usr/bin/
+      src: /{{ local_dir }}/kubernetes/server/bin/kube-scheduler
+      dest: "{{ bin_dir }}"
       mode: 755
 
 - name: 复制 kube-scheduler.service
@@ -12,7 +14,19 @@
 - name: 复制 kube-scheduler 配置文件
   template:
           src: scheduler.j2
-          dest: /etc/kubernetes/scheduler
+          dest: "{{ config_dir }}/{{ config_file }}"
+- name: 复制 scheduler-config.yaml 配置文件
+  template:
+          src: scheduler-config.yaml.j2
+          dest: "{{ config_dir }}/{{ scheduler_config }}"
+
+- name: 新建日志文件
+  file:
+    path: "{{ log_dir }}/{{ log_file }}"
+    state: touch
+
+- name: 重载
+  command: systemctl daemon-reload
 
 - name: 启动 kube-scheduler
   service:

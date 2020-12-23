@@ -1,0 +1,36 @@
+#!/bin/bash
+config()
+{
+cd /{{ remote_dir }}
+
+## 设置集群参数
+kubectl config set-cluster {{ kube_dir }} \
+  --certificate-authority={{ ssl_path }}/{{ ca_file }} \
+  --embed-certs=true \
+  --server={{ apiserver }} \
+  --kubeconfig={{ kube_scheduler }} 
+
+## 设置客户端认证参数
+kubectl config set-credentials system:kube-scheduler \
+  --client-certificate={{ ssl_path }}/{{ kube_scheduler_file }} \
+  --client-key={{ ssl_path }}/{{ kube_scheduler_key_file }} \
+  --embed-certs=true \
+  --kubeconfig={{ kube_scheduler }}
+
+## 设置关联参数
+kubectl config set-context system:kube-scheduler \
+  --cluster={{ kube_dir }} \
+  --user=system:kube-scheduler \
+  --kubeconfig={{ kube_scheduler }}
+
+## 设置默认关联
+kubectl config use-context system:kube-scheduler \
+  --kubeconfig={{ kube_scheduler }}
+}
+
+## 配置 scheduler.config 
+LOCAL_ADDRESS=`ip addr|grep secondary|awk '{print $2}'|cut -c 1-15`
+if [ $LOCAL_ADDRESS == {{ vip }} ];
+then
+    config
+fi
