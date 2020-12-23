@@ -150,7 +150,7 @@ fi
 
 # 创建 Admin 证书
 if [ ! -f ${ADMIN_CSR} ]; then
-   cat << EOF > admin-csr.json 
+   cat << EOF > ${ADMIN_CSR} 
 {
     "CN": "admin",
     "hosts": [],
