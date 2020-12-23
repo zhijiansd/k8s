@@ -1,7 +1,0 @@
-- name: 复制脚本文件
-  copy: 
-      src: install_docker.sh
-      dest: /tmp
-      mode: 755
-- name: install docker
-  shell: /bin/bash /tmp/install_docker.sh
