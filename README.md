@@ -1,4 +1,4 @@
-# 使用Ansible部署Kubernetes集群
+# 使用Ansible部署高可用Kubernetes集群
 
 ---
 节点规划
@@ -18,9 +18,9 @@
 应用规划
 ---
 
-|系统版本 |CFSSL版本 |Etcd版本|Flannel版本|Keepalived版本|Haproxy版本 |Kubernetes版本|
-|:------:|:--------:|:------:|:---------:|:-----------:|:---------:|:------------:|
-|CentOS 8|  v1.4.1  |v3.3.18 |  v0.11.0  |   2.0.19    |   2.1.0   |    v1.17.0   |
+|系统版本 |CFSSL版本 |Etcd版本|Keepalived版本|Haproxy版本 |Kubernetes版本|Containerd版本|Crictl版本|
+|:------:|:--------:|:------:|:-----------:|:---------:|:------------:|:------------:|:--------:|
+|CentOS 8|  1.5.0   |v3.4.14 |   2.1.5     |   2.3.2   |    v1.19.5   |     1.4.3    |  v1.19.0 |
 
 > 注: 该版将需要更改的的配置进行变量化配置，更改项主要在"defaults/main.yaml"、"tasks/main.yaml"这两个文件中，cfssl安装在ansible主机，kubernetes压缩在ansible主机，其他应用下载压缩包在ansible主机即可。
 
@@ -87,18 +87,20 @@ ansible-playbook ssl.yaml
 ansible-playbook k8s.yaml
 ```
 
-> 注:最新的docker需要安装containerd.io，强烈建议下载相应版本后传输到节点进行本地安装，直接下载可能会被墙。
-
 ---
 查看集群状况
 ---
 
 ```bash
-# ansible 192.168.100.136 -a "etcdctl --endpoints=https://192.168.100.136:2379 ls /kube/network/subnets"
+# ansible 192.168.100.136 -a "etcdctl --endpoints=https://192.168.100.136:2379 --cacert=/etc/ssl/etcd/ca.pem --key=/etc/ssl/etcd/etcd-key.pem --cert=/etc/ssl/etcd/etcd.pem -w=table member list"
 192.168.100.136 | CHANGED | rc=0 >>
-/kube/network/subnets/10.244.13.0-24
-/kube/network/subnets/10.244.102.0-24
-/kube/network/subnets/10.244.10.0-24
++------------------+---------+-------+------------------------------+------------------------------+------------+
+|        ID        | STATUS  | NAME  |          PEER ADDRS          |         CLIENT ADDRS         | IS LEARNER |
++------------------+---------+-------+------------------------------+------------------------------+------------+
+| 25d84952513e4c13 | started | etcd3 | https://192.168.100.138:2380 | https://192.168.100.138:2379 |      false |
+| 5700b9ecd6ca26d0 | started | etcd2 | https://192.168.100.137:2380 | https://192.168.100.137:2379 |      false |
+| 8c08a828e17afa88 | started | etcd1 | https://192.168.100.136:2380 | https://192.168.100.136:2379 |      false |
++------------------+---------+-------+------------------------------+------------------------------+------------+
 
 # ansible 192.168.100.139 -a "kubectl cluster-info"
 192.168.100.139 | CHANGED | rc=0 >>
@@ -116,9 +118,9 @@ etcd-1               Healthy   {"health":"true"}
 # ansible 192.168.100.139 -a "kubectl get nodes"
 192.168.100.139 | CHANGED | rc=0 >>
 NAME    STATUS   ROLES    AGE   VERSION
-node1   Ready    <none>   19h   v1.17.0
-node2   Ready    <none>   19h   v1.17.0
-node3   Ready    <none>   19h   v1.17.0
+node1   Ready    <none>   14h   v1.19.5
+node2   Ready    <none>   14h   v1.19.5
+node3   Ready    <none>   14h   v1.19.5
 ```
 
 ---
