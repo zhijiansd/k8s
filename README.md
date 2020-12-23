@@ -10,9 +10,9 @@
 |192.168.100.137|192.168.100.140|192.168.100.143|192.168.100.150|
 |192.168.100.138|192.168.100.141|192.168.100.144|               |
 
-> 注: Master节点使用Keepalived+Haproxy进行高可用负载均衡
-+ Keepalived对Master节点的kube-apiserver提供高可用VIP服务
-+ Haproxy监听VIP对kube-apiserver提供负载均衡服务，所有组件通过开放的8443端口访问
+> 注: Master节点使用KeepAlived+HaProxy进行高可用负载均衡
++ Keepalived对Master节点的Kube-apiserver提供高可用VIP服务
++ Haproxy监听VIP对Kube-apiserver提供负载均衡服务，所有组件通过开放的8443端口访问
 
 ---
 应用规划
