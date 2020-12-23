@@ -1,0 +1,88 @@
+- name: 复制文件
+  copy:
+      src: /{{ local_dir }}/containerd-{{ containerd_version }}-linux-amd64.tar.gz 
+      dest: /{{ remote_dir }}/containerd-{{ containerd_version }}-linux-amd64.tar.gz
+- name: 复制crictl文件
+  copy:
+      src: /{{ local_dir }}/crictl-{{ crictl_version }}-linux-amd64.tar.gz 
+      dest: /{{ remote_dir }}/crictl-{{ crictl_version }}-linux-amd64.tar.gz
+
+- name: 解压文件
+  unarchive: 
+           src: /{{ remote_dir }}/containerd-{{ containerd_version }}-linux-amd64.tar.gz 
+           dest: /{{ remote_dir }} 
+           copy: no
+- name: 解压crictl文件
+  unarchive: 
+           src: /{{ remote_dir }}/crictl-{{ crictl_version }}-linux-amd64.tar.gz
+           dest: /{{ remote_dir }} 
+           copy: no
+
+- name: 复制文件
+  command: 
+         cp /{{ remote_dir }}/bin/{{ item }} {{ bin_dir }}
+  with_items:
+  - containerd
+  - ctr
+  - containerd-shim
+  - containerd-shim-runc-v1
+  - containerd-shim-runc-v2
+- name: 复制crictl
+  command:
+         cp /{{ remote_dir }}/crictl {{ bin_dir }}
+
+- name: 复制Containerd内核加载配置文件
+  template: 
+          src: containerd.conf.j2
+          dest: /etc/modules-load.d/containerd.conf
+- name: 载入模块
+  command: 
+         modprobe {{ item }}
+  with_items:
+  - overlay
+  - br_netfilter
+
+- name: 复制Sysctl配置文件
+  template:
+         src: 99-kubernetes-cri.conf.j2
+         dest: /etc/sysctl.d/99-kubernetes-cri.conf 
+- name: 应用sysctl参数
+  command: 
+         sysctl --system
+
+- name: 复制ctrctl.yaml
+  template:
+         src: crictl.yaml.j2
+         dest: /etc/crictl.yaml
+ 
+- name : 安装依赖
+  yum:
+    name:
+      - yum-utils
+      - device-mapper-persistent-data
+      - lvm2
+    state: present
+
+- name: 新建工作目录
+  file: 
+      path: "{{ work_dir }}"
+      state: directory
+
+- name: 复制启动项
+  template: 
+          src: containerd.service.j2
+          dest: /usr/lib/systemd/system/containerd.service
+- name: 复制配置文件
+  template: 
+         src: config.toml.j2
+         dest: /etc/containerd/config.toml
+
+- name: 重载
+  command: systemctl daemon-reload
+
+- name: 运行 containerd
+  service:
+         name: containerd
+         state: started 
+         enabled: true
+

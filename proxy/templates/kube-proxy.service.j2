@@ -1,0 +1,16 @@
+[Unit]
+Description=Kubernetes Kube-Proxy Server
+Documentation=https://kubernetes.io/zh/docs
+
+[Service]
+EnvironmentFile=-{{ config_dir }}/{{ config_file }}
+ExecStart={{ bin_dir }}/kube-proxy \
+            $KUBE_LOGTOSTDERR \
+            $KUBE_LOG_LEVEL \
+            $KUBE_LOG_ARGS \
+            $KUBE_PROXY_ARGS
+Restart=on-failure
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,6 @@
+#!/bin/bash
+##编译安装
+cd /{{ remote_dir }}/keepalived-{{ keepalived_version }}
+./configure --sysconf=/etc --prefix=/usr/local/
+make 
+make install

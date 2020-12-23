@@ -1,0 +1,22 @@
+#!/bin/bash
+contact={{ mailx_contact }}
+notify() {
+	    local mailsubject="{{ ansible_hostname }} to be $1, vip floating"
+	    local mailbody="$(date +'%F %T'): Server {{ ansible_default_ipv4.address }} detected as $1"
+            echo "$mailbody" | mail -s "$mailsubject" $contact
+	}
+case $1 in
+master)
+    notify master
+    ;;
+backup)
+    notify backup
+    ;;
+fault)
+    notify fault
+    ;;
+*)
+    echo "Usage: $(basename $0) {master|backup|fault}"
+    exit 1
+    ;;
+esac         

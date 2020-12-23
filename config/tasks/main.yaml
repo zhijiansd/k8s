@@ -1,0 +1,86 @@
+- name: 复制 kubeconfig.sh  脚本文件
+  template:
+      src: kubeconfig.sh.j2
+      dest: "/{{ remote_dir }}/kubeconfig.sh"
+      mode: 744
+  ignore_errors: yes
+
+- name: 新建文件夹
+  file: 
+       path: /root/.kube
+       state: directory
+
+- name: 创建 kubeconfig 
+  shell: /bin/bash /{{ remote_dir }}/kubeconfig.sh
+  when: ansible_ens33.ipv4_secondaries[0].address == "192.168.100.150"
+  ignore_errors: yes
+- name: 将kubeconfig复制至本地 
+  fetch:
+    src: .kube/config
+    dest: "/{{ remote_dir }}"
+  ignore_errors: yes
+
+- name: 复制 controller-manager-config.sh  脚本文件
+  template:
+      src: controller-manager-config.sh.j2
+      dest: "/{{ remote_dir }}/controller-manager-config.sh"
+      mode: 744
+- name: 创建 controller-manager-config 
+  shell: /bin/bash /{{ remote_dir }}/controller-manager-config.sh
+  when: ansible_ens33.ipv4_secondaries[0].address == "192.168.100.150"
+  ignore_errors: yes
+- name: 将kube-controller-manager-config复制至本地 
+  fetch:
+    src: "/{{ remote_dir }}/{{ kube_controller_manager }}"
+    dest: "/{{ remote_dir }}"
+  ignore_errors: yes
+
+- name: 复制 scheduler-config.sh 脚本文件
+  template:
+      src: scheduler-config.sh.j2
+      dest: "/{{ remote_dir }}/scheduler-config.sh"
+      mode: 744
+- name: 创建 scheduler-config
+  shell: /bin/bash /{{ remote_dir }}/scheduler-config.sh
+  when: ansible_ens33.ipv4_secondaries[0].address == "192.168.100.150"
+  ignore_errors: yes
+- name: 将kube-scheduler-config复制至本地 
+  fetch:
+    src: "/{{ remote_dir }}/{{ kube_scheduler }}"
+    dest: "/{{ remote_dir }}"
+  ignore_errors: yes
+
+- name: 将 kubeconfig 文件复制至指定文件夹
+  shell: find /tmp/* -type f -exec sh -c 'cp -a {} /tmp/' \;
+  delegate_to: 127.0.0.1
+  ignore_errors: yes
+
+- name: 分发 config 文件
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  with_items:
+    - { src: '/{{ remote_dir }}/config', dest: '/root/.kube/config' }
+    - { src: '/{{ remote_dir }}/kube-controller-manager.kubeconfig', dest: '{{ kube_dir }}/kube-controller-manager.kubeconfig' }
+    - { src: '/{{ remote_dir }}/kube-scheduler.kubeconfig', dest: '{{ kube_dir }}/kube-scheduler.kubeconfig' }
+
+- name: 复制 kubelet-config.sh 脚本文件
+  template:
+      src: kubelet-config.sh.j2
+      dest: "/{{ remote_dir }}/kubelet-config.sh"
+      mode: 744
+- name: 创建 kubelet-config 并分发至其他 node 节点
+  shell: /bin/bash /{{ remote_dir }}/kubelet-config.sh
+  when: ansible_ens33.ipv4_secondaries[0].address == "192.168.100.150"
+  ignore_errors: yes
+
+- name: 复制 proxy-config.sh 脚本文件
+  template:
+      src: proxy-config.sh.j2
+      dest: "/{{ remote_dir }}/proxy-config.sh"
+      mode: 744
+- name: 创建 proxy-config 并分发至 node 节点
+  shell: /bin/bash /{{ remote_dir }}/proxy-config.sh
+  when: ansible_ens33.ipv4_secondaries[0].address == "192.168.100.150"
+  ignore_errors: yes
+

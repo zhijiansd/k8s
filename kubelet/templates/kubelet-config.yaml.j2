@@ -1,0 +1,91 @@
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+address: {{ ansible_default_ipv4.address }}
+healthzBindAddress: {{ ansible_default_ipv4.address }}
+healthzPort: 10248
+nodeIp: {{ ansible_default_ipv4.address }}
+port: 10250
+readOnlyPort: 10255
+authentication:
+  x509:
+    clientCAFile: {{ cert_dir }}/{{ ca_certfile }}
+  webhook:
+    cacheTTL: 2m
+    enabled: true
+  anonymous:
+    enabled: false
+authorization:
+  mode: Webhook
+  webhook:
+    cacheAuthorizedTTL: 5m
+    cacheUnauthorizedTTL: 30s
+cgroupDriver: cgroupfs
+cgroupRoot: ""
+cgroupsPerQOS: true
+cpuCfsQuota: true
+cpuCfsQuotaPeriod: 100ms
+cpuManagerPolicy: static
+cpuManagerReconcilePeriod: 1m
+clusterDNS:
+- 10.244.0.2
+clusterDomain: cluster.local
+enableDebuggingHandlers: true
+eventQps: 10
+eventBurst: 5 
+evictionHard:
+    memory.available:  "15%"
+    imagefs.available: "15%"
+    nodefs.available: "15%"
+    nodefs.inodesFree: "5%"
+evictionMaxPodGracePeriod: -1
+evictionMinimumReclaim:
+    memory.available:  "10%"
+    imagefs.available: "10%"
+    nodefs.available: "10%"
+evictionPressureTransitionPeriod: 5m
+evictionSoft:
+    memory.available:  "5%"
+    imagefs.available: "5%"
+    nodefs.available: "5%"
+evictionSoftGracePeriod:
+    memory.available:  2m
+    imagefs.available: 2m
+    nodefs.available: 2m
+experimentalAllocatableIgnoreEviction: false
+failSwapOn: false
+fileCheckFrequency: 20s
+hairpinMode: promiscuous-bridge
+httpCheckFrequency: 20s
+imageGCHighThreshold: 85
+imageGCLowThreshold: 80
+imagePullProgressDeadline: 5m
+kubeAPIBurst: 10
+kubeAPIQPS: 5
+kubeReserved:
+    cpu: "500m"
+    memory: "512Mi"
+    ephemeral-storage: "512Mi"
+maxOpenFiles: 1000000
+maxPods: 110
+maximumDeadContainers: -1
+minimumImageTTLDuration: 2m
+networkPlugin: cni
+podMaxPids: -1
+registryBurst: 10
+registryQps: 5
+kubeletCgroups: ""
+rotateCertificates: true
+rotateServerCertificates: true
+runtimeRequestTimeout: 2m
+serializeImagePulls: false
+streamingConnectionIdleTimeout: 4h
+syncFrequency: 1m
+systemCgroups: ""
+systemReserved:
+    cpu: "500m"
+    memory: "512Mi"
+    ephemeral-storage: "512Mi"
+systemReservedCgroup: ""
+featureGates:    
+    RotateKubeletClientCertificate: true
+    RotateKubeletServerCertificate: true

@@ -1,0 +1,112 @@
+#!/bin/bash
+
+##配置优先级
+
+function rand(){
+    min=$1
+    max=$(($2-$min+1))
+    num=$(($RANDOM+50))
+    echo $(($num%$max+$min))  
+}
+
+if [ {{ ansible_default_ipv4.address }} == {{ master }} ];
+then
+    NUM=$(rand 101 110)
+    VRRP=MASTER
+else [ {{ ansible_default_ipv4.address }} == {{ backup1 }} ] or [ {{ ansible_default_ipv4.address }} == {{ backup2 }} ];
+    NUM=$(rand 90 100)
+    VRRP=BACKUP
+fi
+
+##配置keepalived
+cat <<EOF > /etc/keepalived/keepalived.conf
+! Configuration File for keepalived
+global_defs {
+    ##设置keepalived进程名称为默认值
+    process_names      
+
+    notification_email {
+        {{ notification_email1 }}
+        {{ notification_email2 }}
+    }
+    notification_email_from {{ email_from }}
+        smtp_server {{ smtp_server }}
+        ##HELO消息中使用的名称默认为本地主机名
+        smtp_helo_name 
+        smtp_connect_timeout 30
+        
+        ##设置在检查器启动时记录所有检查器失败
+        checker_log_all_failures true
+        router_id LVS_K8S
+        ##用于IPv4 VRRP广告的组播组
+        vrrp_mcast_group4 224.0.0.18
+        default_interface {{ interface }}
+        
+        ##启动时刷新所有现有的LVS配置
+        lvs_flush
+        ##关闭时刷新剩余的LVS配置
+	lvs_flush_onstop
+        ##过渡到MASTER后，第二组免费ARP的延迟。
+        ##以秒为单位，0表示没有第二组(默认值:5)
+        vrrp_garp_master_delay 10
+        ##过渡到MASTER后一次发送的免费ARP消息数(默认值:5)
+        vrrp_garp_master_repeat 1
+        ##MASTER收到较低优先级的广告后，第二组免费ARP的延迟
+        vrrp_garp_lower_prio_delay 10
+        ##在MASTER收到较低优先级的广告后，一次发送的免费ARP消息的数量
+        vrrp_garp_lower_prio_repeat 1
+        ##MASTER期间刷新免费ARP的最小时间间隔(以秒为单位)（默认值：0（不刷新））
+        vrrp_garp_master_refresh 60
+        ##在MASTER时一次发送的免费ARP消息数(默认值:1)
+        vrrp_garp_master_refresh_repeat 2
+        ##接口发送免费ARP报文的延迟时间，单位为毫秒，小数,秒(分辨用)(默认值:0)
+        vrrp_garp_interval 0
+        ##在接口上发送的自发NA消息之间的延迟（以毫秒为单位），十进制，秒(分辨用)(默认值:0)
+        vrrp_gna_interval 0
+        ##设置要使用的默认VRRP版本(默认值：2，但IPv6实例将使用版本3）
+        vrrp_version 2
+        ##不添加任何iptables规则
+        vrrp_iptables
+        ##如果广告与先前收到的广告来自同一主路由器，则不会进行检查(默认:不跳过)
+        vrrp_skip_check_adv_addr
+}
+vrrp_script {{ vrrp_script_name }}  {
+    script "{{ vrrp_script_path }}"
+    ##脚本调用时间(默认1秒)
+    interval 2
+    ##脚本被认为调用失败的时间     
+    timeout  2    
+    ##优先级(默认为0,范围在-253-253之间) 
+    weight  -20   
+    ##当脚本为OK状态时, 并且最终weight(以track_script中的weight覆盖值为准)>0, 则优先级可以加上weight 
+    fall    5     
+    ##当脚本为KO状态时, 并且终止的weight(以track_script中的weight覆盖值为准)<0, 则优先级可以减去weight 
+    rise    10   
+    ##在用户/组下运行脚本(默认为用户组) 
+    user    {{ vrrp_script_user }}   
+}
+vrrp_instance VI_1 {
+    state $VRRP       
+    interface {{ interface }}
+    virtual_router_id 51
+    priority $NUM
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass abcd
+    }
+    virtual_ipaddress {
+        {{ vip }}/24
+    }
+    track_script {
+        {{ vrrp_script_name }}
+    }
+    ##状态为master时发送邮件脚本
+    notify_master "{{ mailx_path }} master" 
+    ##状态为backup时发送邮件脚本
+    notify_backup "{{ mailx_path }} backup" 
+    ##状态为backup时发送邮件脚本
+    notify_fault  "{{ mailx_path }} fault" 
+    
+}
+EOF

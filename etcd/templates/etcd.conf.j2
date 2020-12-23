@@ -1,0 +1,30 @@
+name: {{ ansible_nodename }}
+snapshot-count: {{ snapshot_count }}
+heartbeat-interval: {{ heartbeat_interval }}    
+election-timeout: {{ election_timeout }}
+data-dir: {{ data_dir }}
+listen-peer-urls: https://{{ ansible_default_ipv4.address }}:2380
+listen-client-urls: https://{{ ansible_default_ipv4.address }}:2379,https://127.0.0.1:2379
+initial-advertise-peer-urls: https://{{ ansible_default_ipv4.address }}:2380
+advertise-client-urls: https://{{ ansible_default_ipv4.address }}:2379
+initial-cluster: {{ peer_addresses }}
+etcd_client_url: "https://{{ ansible_default_ipv4.address }}:2379"
+initial-cluster-token: 'etcd-cluster'
+initial-cluster-state: 'new'   ##初始化集群状态('new' or 'existing')
+client-transport-security:
+  client-cert-auth: true
+  cert-file: {{ cert_dir }}/etcd.pem
+  key-file: {{ cert_dir }}/etcd-key.pem
+  trusted-ca-file: {{ cert_dir }}/ca.pem
+peer-transport-security:
+  client-cert-auth: true
+  cert-file: {{ cert_dir }}/etcd.pem
+  key-file: {{ cert_dir }}/etcd-key.pem
+  trusted-ca-file: {{ cert_dir }}/ca.pem
+max-txn-ops: {{ max_txn_ops }}
+max-request-bytes: {{ max_request_bytes }}
+grpc-keepalive:
+  min-time: {{ grpc_keepalive_min_time }}
+  interval: {{ grpc_keepalive_interval }}
+  timeout: {{ grpc_keepalive_timeout }}
+log-level: {{ log_level }}

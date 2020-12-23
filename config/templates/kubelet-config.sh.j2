@@ -1,0 +1,56 @@
+#!/bin/bash
+config()
+{
+
+export NODE_NAMES={{ node }}
+
+for node_name in ${NODE_NAMES[@]}
+  do
+    echo ">>> ${node_name}"
+
+    # 创建 token
+    export BOOTSTRAP_TOKEN=$(kubeadm token create \
+      --description kubelet-bootstrap-token \
+      --groups system:bootstrappers:${node_name} \
+      --kubeconfig ~/.kube/config)
+
+    # 设置集群参数
+    kubectl config set-cluster {{ cluster_name }} \
+      --certificate-authority={{ ssl_path }}/{{ ca_file }} \
+      --embed-certs=true \
+      --server={{ apiserver }} \
+      --kubeconfig=kubelet-bootstrap-${node_name}.kubeconfig
+
+    # 设置客户端认证参数
+    kubectl config set-credentials kubelet-bootstrap \
+      --token=${BOOTSTRAP_TOKEN} \
+      --kubeconfig=kubelet-bootstrap-${node_name}.kubeconfig
+
+    # 设置上下文参数
+    kubectl config set-context default \
+      --cluster={{ cluster_name }} \
+      --user=kubelet-bootstrap \
+      --kubeconfig=kubelet-bootstrap-${node_name}.kubeconfig
+
+    # 设置默认上下文
+    kubectl config use-context default --kubeconfig=kubelet-bootstrap-${node_name}.kubeconfig
+  done
+}
+
+copy-config()
+{
+  NODE_NAMES={{ node }}
+  for node_name in ${NODE_NAMES[@]}
+  do
+    echo ">>> ${node_name}"
+    scp kubelet-bootstrap-${node_name}.kubeconfig root@${node_name}:{{ kube_dir }}/kubelet-bootstrap.kubeconfig
+  done
+}
+
+##配置 kubelet.kubeconfig并复制至所有 node 节点
+LOCAL_ADDRESS=`ip addr|grep secondary|awk '{print $2}'|cut -c 1-15`
+if [ $LOCAL_ADDRESS == {{ vip }} ]
+then
+    config
+    copy-config
+fi

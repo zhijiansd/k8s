@@ -1,0 +1,20 @@
+[Unit]
+Description=The Kubernetes Node Agent
+Documentation=https://kubernetes.io/zh/docs
+
+[Service]
+WorkingDirectory=/var/lib/kubelet
+EnvironmentFile=-/etc/kubernetes/kubelet
+ExecStart=/usr/bin/kubelet \
+            $KUBE_LOGTOSTDERR \
+            $KUBE_LOG_LEVEL \
+            $KUBELET_HOSTNAME \
+            $KUBELET_CONTAINER_RUNTIME \
+            $KUBE_LOG_ARGS \
+            $KUBELET_ARGS
+Restart=always
+StartLimitInterval=0
+RestartSec=600ms
+
+[Install]
+WantedBy=multi-user.target

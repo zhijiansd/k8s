@@ -1,0 +1,47 @@
+global
+        maxconn         10000
+	ulimit-n	20032
+        stats socket    /var/run/haproxy.pid mode 600 level admin
+        log             127.0.0.1 local0
+        user            haproxy	
+        uid             200
+        gid             200
+        chroot          /var/empty
+        #daemon
+                    
+defaults                  
+        log     global
+        mode    http                  ##默认模式{tcp|http|health},tcp是4层,http是7层,health只会返回OK
+        option  httplog               ##日志类别:http日志格式
+        option  dontlognull           ##不记录健康检查的日志信息
+        retries 3                     ##3次连接失败就认为服务不可用
+        option  redispatch            ##ServerID对应的服务器挂掉后,强制定向到其他健康服务器
+        maxconn 4000                  ##默认最大连接数
+        timeout connect      5000     ##连接超时
+        timeout client      50000     ##客户端超时
+        timeout server      50000     ##服务端超时
+
+listen  admin_stats
+        bind {{ haproxy_bind }}
+        mode http
+        log global
+        maxconn         8000
+        timeout client  30s
+        
+        stats uri /status
+        stats realm Welcome login\ Haproxy
+        stats auth {{ haproxy_user }}:{{ haproxy_pass }}
+        stats hide-version
+        stats {{ haproxy_user }} if TRUE
+
+listen  {{ haproxy_backend_name }}
+        bind {{ haproxy_backend_bind }}
+        mode tcp
+        option tcplog
+        balance source
+         
+        server  master1 {{ haproxy_server1 }}  check inter 2000 rise 2 fall 3
+        server  master2 {{ haproxy_server2 }}  check inter 2000 rise 3 fall 3
+        server  master3 {{ haproxy_server3 }}  check inter 2000 rise 3 fall 3
+        ##check指健康状况检查,inter 2000指检测频率
+        ##rise 2指从离线状态转换至正常状态需要成功检查的次数;fall 3指失败3次即认为服务器不可

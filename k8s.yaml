@@ -1,0 +1,51 @@
+- hosts: etcd,master,node
+  remote_user: root
+  gather_facts: no
+  roles:
+      - allhosts
+
+- hosts: etcd
+  remote_user: root
+  roles:
+       - etcd
+
+- hosts: master,node
+  remote_user: root
+  gather_facts: no
+  tasks:
+    - name: 新建工作目录
+      file: 
+        path: /etc/kubernetes
+        state: directory
+    - name: 新建日志文件目录
+      file: 
+        path: /var/log/kubernetes
+        state: directory
+
+- hosts: master
+  remote_user: root
+  roles:
+       - apiserver
+       - keepalived-haproxy
+
+- hosts: master
+  remote_user: root
+  tasks:
+    - name: 等待30秒
+      wait_for:
+        timeout: 30
+
+- hosts: master
+  remote_user: root
+  roles:
+       - config
+       - controller-manager
+       - scheduler
+       - master-auth
+
+- hosts: node
+  remote_user: root
+  roles:
+       - containerd
+       - kubelet
+       - proxy

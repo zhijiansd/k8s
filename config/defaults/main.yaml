@@ -1,0 +1,22 @@
+apiserver: "https://192.168.100.150:8443"
+vip: "192.168.100.150"
+master: "(master1 master2 master3)"
+node: "(node1 node2 node3)"
+cluster_name: kubernetes
+remote_dir: tmp
+kube_dir: "/etc/kubernetes"
+
+ssl_path: "/etc/ssl/kubernetes"
+ca_file: "ca.pem"
+apiserver_kubelet_client_file: "apiserver-kubelet-client.pem"
+apiserver_kubelet_client_key_file: "apiserver-kubelet-client-key.pem"
+kube_controller_manager_file: "controller-manager.pem"
+kube_controller_manager_key_file: "controller-manager-key.pem"
+kube_scheduler_file: "scheduler.pem"
+kube_scheduler_key_file: "scheduler-key.pem"
+kube_proxy_file: "proxy.pem"
+kube_proxy_key_file: "proxy-key.pem"
+
+kube_controller_manager: kube-controller-manager.kubeconfig
+kube_scheduler: kube-scheduler.kubeconfig
+kube_proxy: kube-proxy.kubeconfig

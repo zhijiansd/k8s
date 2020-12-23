@@ -1,0 +1,43 @@
+# var in tasks
+local_dir: root
+remote_dir: tmp
+
+# tasks in haproxy
+haproxy_version: "2.3.2"
+haproxy_work_dir: "/etc/haproxy" 
+
+# tasks in keepalived
+keepalived_version: "2.1.5"
+keepalived_work_dir: "/etc/keepalived"
+
+# var in haproxy
+haproxy_bind: "0.0.0.0:10080"
+haproxy_user: "admin"
+haproxy_pass: "admin"
+haproxy_backend_name: "kube-master" 
+haproxy_backend_bind: "0.0.0.0:8443"
+haproxy_server1: "192.168.100.139:6443" 
+haproxy_server2: "192.168.100.140:6443" 
+haproxy_server3: "192.168.100.141:6443"
+
+# keepalived conf
+master: "192.168.100.139"
+backup1: "192.168.100.140"
+backup2: "192.168.100.141"
+vip: "192.168.100.150"
+
+notification_email1: "wangzhijiansd@qq.com"
+notification_email2: "zhijiansd@163.com"
+email_from: "admin@wangzhijian.cn"
+smtp_server: "127.0.0.1 25"
+interface: "ens33"
+vrrp_script_name: "check_api"
+vrrp_script_user: root
+vrrp_script_path: "/etc/keepalived/check_api.sh"
+
+mailx_from: "wangzhijiansd@qq.com"
+mailx_smtp: "smtp.qq.com"
+mailx_password: "abcdef"
+mailx_auth: "login"
+mailx_contact: "wangzhijiansd@163.com"
+mailx_path: "/etc/keepalived/mailx.sh"

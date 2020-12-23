@@ -1,0 +1,44 @@
+- name: 复制文件
+  copy: 
+      src: /{{ local_dir }}/etcd-{{ etcd_version }}-linux-amd64.tar.gz 
+      dest: /{{ remote_dir }}/etcd-{{ etcd_version }}-linux-amd64.tar.gz
+- name: 解压文件
+  unarchive: 
+           src: /{{ remote_dir }}/etcd-{{ etcd_version }}-linux-amd64.tar.gz 
+           dest: /{{ remote_dir }} 
+           copy: no
+
+- name: 新建工作目录
+  file: 
+      path: "{{ work_dir }}"
+      state: directory
+- name: 新建数据目录
+  file: 
+      path: "{{ data_dir }}"
+      state: directory
+
+- name: 复制 etcd
+  command: 
+         cp /{{ remote_dir }}/etcd-{{ etcd_version }}-linux-amd64/{{ item }} {{ bin_dir }}
+  with_items:
+  - etcd
+  - etcdctl
+
+- name: 复制启动项
+  template: 
+          src: etcd.service.j2 
+          dest: /usr/lib/systemd/system/etcd.service
+- name: 复制配置文件
+  template: 
+          src: etcd.conf.j2 
+          dest: "{{ work_dir }}/{{ config_file }}"
+
+- name: 重载
+  command: systemctl daemon-reload
+
+- name: 启动 etcd
+  service:
+          name: etcd
+          state: started
+          enabled: yes
+
