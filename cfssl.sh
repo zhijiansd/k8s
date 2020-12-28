@@ -18,7 +18,8 @@ CONTROLLER_MANAGER_CSR='controller-manager-csr.json'
 SCHEDULER_CSR='scheduler-csr.json'
 PROXY_CSR='proxy-csr.json'
 ETCD_CSR='etcd-csr.json'
-CLIENT_CSR='apiserver-etcd-client-csr.json'
+API_ETCD_CLIENT_CSR='apiserver-etcd-client-csr.json'
+ETCD_CLIENT_CSR='etcd-client-csr.json'
 METRICS_SERVER_CSR='metrics-server-csr.json'
 DASHBOARD_CSR='dashboard-csr.json'
 
@@ -28,7 +29,8 @@ CONTROLLER_MANAGER_BARENAME='controller-manager'
 SCHEDULER_BARENAME='scheduler'
 PROXY_BARENAME='proxy'
 ETCD_BARENAME='etcd'
-CLIENT_BARENAME='apiserver-etcd-client'
+API_ETCD_CLIENT_BARENAME='apiserver-etcd-client'
+ETCD_CLIENT_BARENAME='etcd-client'
 METRICS_SERVER_BARENAME='metrics-server'
 DASHBOARD_BARENAME='dashboard'
 
@@ -81,8 +83,8 @@ if [ ! -f {$CSR} ]; then
   "names": [
     {
       "C": "CN",
-      "ST": "BeiJing",
-      "L": "BeiJing",
+      "ST": "ChengDu",
+      "L": "ChengDu",
       "O": "K8S",
       "OU": "System"
     }
@@ -132,8 +134,8 @@ if [ ! -f ${APISERVER_CSR} ]; then
     "names": [
         {
             "C": "CN",
-            "ST": "BeiJing",
-            "L": "BeiJing",
+            "ST": "ChengDu",
+            "L": "ChengDu",
             "O": "K8S",
             "OU": "System"
         }
@@ -155,8 +157,8 @@ if [ ! -f ${APISERVER_KUBELET_CLIENT_CSR} ]; then
     "names": [
         {
             "C": "CN",
-            "ST": "BeiJing",
-            "L": "BeiJing",
+            "ST": "ChengDu",
+            "L": "ChengDu",
             "O": "system:masters",
             "OU": "System"
         }
@@ -186,8 +188,8 @@ if [ ! -f ${CONTROLLER_MANAGER_CSR} ]; then
     "names": [
       {
         "C": "CN",
-        "ST": "BeiJing",
-        "L": "BeiJing",
+        "ST": "ChengDu",
+        "L": "ChengDu",
         "O": "system:kube-controller-manager",
         "OU": "System"
       }
@@ -217,8 +219,8 @@ if [ ! -f ${SCHEDULER_CSR} ]; then
     "names": [
       {
         "C": "CN",
-        "ST": "BeiJing",
-        "L": "BeiJing",
+        "ST": "ChengDu",
+        "L": "ChengDu",
         "O": "system:kube-scheduler",
         "OU": "System"
       }
@@ -241,8 +243,8 @@ if [ ! -f ${PROXY_CSR} ]; then
     "names": [
       {
         "C": "CN",
-        "ST": "BeiJing",
-        "L": "BeiJing",
+        "ST": "ChengDu",
+        "L": "ChengDu",
         "O": "K8S",
         "OU": "System"
       }
@@ -265,8 +267,8 @@ if [ ! -f ${METRICS_SERVER_CSR} ]; then
     "names": [
         {
             "C": "CN",
-            "L": "BeiJing",
-            "ST": "BeiJing",
+            "L": "ChengDu",
+            "ST": "ChengDu",
             "O": "K8S",
             "OU": "metrics-erver"
         }
@@ -289,8 +291,8 @@ if [ ! -f ${DASHBOARD_CSR} ]; then
     "names": [
         {
             "C": "CN",
-            "L": "BeiJing",
-            "ST": "BeiJing",
+            "L": "ChengDu",
+            "ST": "ChengDu",
             "O": "K8S",
             "OU": "kubernetes-dashboard"
         }
@@ -319,8 +321,8 @@ if [ ! -f ${ETCD_CSR} ]; then
     "names": [
         {
             "C": "CN",
-            "L": "BeiJing",
-            "ST": "BeiJing",
+            "L": "ChengDu",
+            "ST": "ChengDu",
             "O": "etcd",
             "OU": "etcd-server"
         }
@@ -331,8 +333,32 @@ fi
 
 # 创建用来为 apiserver-etcd-client 生成密钥和证书的 JSON 配置文件
 
-if [ ! -f ${CLIENT_CSR} ]; then
-   cat << EOF > ${CLIENT_CSR}
+if [ ! -f ${API_ETCD_CLIENT_CSR} ]; then
+   cat << EOF > ${API_ETCD_CLIENT_CSR}
+{
+    "CN": "apiserver-etcd-client",
+    "hosts": [],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "CN",
+            "L": "ChengDu",
+            "ST": "ChengDu",
+            "O": "system:masters",
+            "OU": "apiserver-etcd-client"
+        }
+    ]
+}
+EOF
+fi
+
+# 创建用来为 etcd-client 生成密钥和证书的 JSON 配置文件
+
+if [ ! -f ${ETCD_CLIENT_CSR} ]; then
+   cat << EOF > ${ETCD_CLIENT_CSR}
 {
     "CN": "etcd-client",
     "hosts": [],
@@ -343,9 +369,9 @@ if [ ! -f ${CLIENT_CSR} ]; then
     "names": [
         {
             "C": "CN",
-            "L": "BeiJing",
-            "ST": "BeiJing",
-            "O": "system:masters",
+            "L": "ChengDu",
+            "ST": "ChengDu",
+            "O": "etcd",
             "OU": "etcd-client"
         }
     ]
@@ -396,12 +422,15 @@ ${ETCD_CSR} | cfssljson -bare ${ETCD_BARENAME} > /dev/null 2>&1
 # 为 apiserver-etcd-client 生成密钥和证书
 cfssl gencert -ca=ca.pem -ca-key=ca-key.pem \
 --config=${CONFIG} -profile=etcd \
-${CLIENT_CSR} | cfssljson -bare ${CLIENT_BARENAME} > /dev/null 2>&1
+${API_ETCD_CLIENT_CSR} | cfssljson -bare ${API_ETCD_CLIENT_BARENAME} > /dev/null 2>&1
 
+# 为 etcd-client 生成密钥和证书
+cfssl gencert -ca=ca.pem -ca-key=ca-key.pem \
+--config=${CONFIG} -profile=etcd \
+${ETCD_CLIENT_CSR} | cfssljson -bare ${ETCD_CLIENT_BARENAME} > /dev/null 2>&1
 
 if [ -e "${SSLDIR}/ca.pem" -a -e "${SSLDIR}/ca-key.pem" ]; then
      rm -f ca.pem ca-key.pem
 fi
 
 mv *.pem ${SSLDIR}/
-
