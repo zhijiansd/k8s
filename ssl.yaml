@@ -16,6 +16,8 @@
         - { src: '{{ ca_dir }}/ca-key.pem', dest: '{{ etcd_ssl_dir }}' }
         - { src: '{{ ca_dir }}/etcd.pem', dest: '{{ etcd_ssl_dir }}' }
         - { src: '{{ ca_dir }}/etcd-key.pem', dest: '{{ etcd_ssl_dir }}' }
+        - { src: '{{ ca_dir }}/etcd-client.pem', dest: '{{ etcd_ssl_dir }}' }
+        - { src: '{{ ca_dir }}/etcd-client-key.pem', dest: '{{ etcd_ssl_dir }}' }
     - name: 安装根证书
       yum: state=present name=ca-certificates
     - name: 开启根证书动态配置
