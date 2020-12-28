@@ -106,6 +106,8 @@
         - { bin: 'kube-scheduler' }
         - { bin: 'kube-controller-manager' }
         - { bin: 'kube-apiserver' }
+        - { bin: 'kubectl' }
+        - { bin: 'kubeadm' }
 
     - name: 删除证书文件
       file:
