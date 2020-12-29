@@ -14,7 +14,7 @@
   shell: /bin/bash /{{ remote_dir }}/kubeconfig.sh
   when: ansible_ens33.ipv4_secondaries[0].address == "192.168.100.150"
   ignore_errors: yes
-- name: 将kubeconfig复制至本地 
+- name: 将kubeconfig复制至ansible主机本地 
   fetch:
     src: .kube/config
     dest: "/{{ remote_dir }}"
@@ -29,7 +29,7 @@
   shell: /bin/bash /{{ remote_dir }}/controller-manager-config.sh
   when: ansible_ens33.ipv4_secondaries[0].address == "192.168.100.150"
   ignore_errors: yes
-- name: 将kube-controller-manager-config复制至本地 
+- name: 将kube-controller-manager-config复制至ansible主机本地 
   fetch:
     src: "/{{ remote_dir }}/{{ kube_controller_manager }}"
     dest: "/{{ remote_dir }}"
@@ -44,7 +44,7 @@
   shell: /bin/bash /{{ remote_dir }}/scheduler-config.sh
   when: ansible_ens33.ipv4_secondaries[0].address == "192.168.100.150"
   ignore_errors: yes
-- name: 将kube-scheduler-config复制至本地 
+- name: 将kube-scheduler-config复制至ansible主机本地 
   fetch:
     src: "/{{ remote_dir }}/{{ kube_scheduler }}"
     dest: "/{{ remote_dir }}"
