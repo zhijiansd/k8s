@@ -76,7 +76,6 @@ ansible all -m copy -a "src=/etc/hosts dest=/etc/hosts"
 
 ```bash
 source cfssl.sh
-ansible-playbook ssl.yaml
 ```
 
 ---
