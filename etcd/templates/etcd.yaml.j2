@@ -2,6 +2,7 @@ name: {{ ansible_nodename }}
 snapshot-count: {{ snapshot_count }}
 heartbeat-interval: {{ heartbeat_interval }}    
 election-timeout: {{ election_timeout }}
+enable-v2: true
 data-dir: {{ data_dir }}
 listen-peer-urls: https://{{ ansible_default_ipv4.address }}:2380
 listen-client-urls: https://{{ ansible_default_ipv4.address }}:2379,https://127.0.0.1:2379

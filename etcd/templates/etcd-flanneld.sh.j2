@@ -1,0 +1,8 @@
+#!/bin/bash
+## Flannel不支持etcd-v3，需要开启etcd-v2版本
+
+export ETCDCTL_API=2
+
+etcdctl --endpoints="{{ etcd_endpoints }}" --ca-file={{ ca_file }} --cert-file={{ etcd_certfile }} --key-file={{ etcd_keyfile }} mkdir {{ etcd_prefix }}
+
+etcdctl --endpoints="{{ etcd_endpoints }}" --ca-file={{ ca_file }} --cert-file={{ etcd_certfile }} --key-file={{ etcd_keyfile }} set {{ etcd_prefix }}/config '{ "Network": "10.244.0.0/16" }'

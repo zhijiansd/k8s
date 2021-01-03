@@ -73,6 +73,8 @@
         - { src: '{{ ca_dir }}/ca-key.pem', dest: '{{ k8s_ssl_dir }}' }
         - { src: '{{ ca_dir }}/proxy.pem', dest: '{{ k8s_ssl_dir }}' }
         - { src: '{{ ca_dir }}/proxy-key.pem', dest: '{{ k8s_ssl_dir }}' }
+        - { src: '{{ ca_dir }}/etcd-client.pem', dest: '{{ k8s_ssl_dir }}' }
+        - { src: '{{ ca_dir }}/etcd-client-key.pem', dest: '{{ k8s_ssl_dir }}' }
     - name: 安装根证书
       yum: state=present name=ca-certificates
     - name: 开启根证书动态配置
@@ -127,3 +129,4 @@
        - containerd
        - kubelet
        - proxy
+       - flannel
