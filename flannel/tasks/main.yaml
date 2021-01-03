@@ -9,7 +9,7 @@
            copy: no
 
 - name: 复制 flanneld
-  command: cp /{{ remote_dir }}/flanneld  /usr/bin/
+  command: cp /{{ remote_dir }}/flanneld  {{ bin_dir }}
 - name: 新建目录
   file: 
       path: /usr/libexec/flannel/
