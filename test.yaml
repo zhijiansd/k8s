@@ -1,7 +1,0 @@
-- hosts: node
-  remote_user: root
-  roles:
-       - containerd
-       - kubelet
-       - proxy
-       - flannel
