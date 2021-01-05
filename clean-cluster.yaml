@@ -117,6 +117,9 @@
         - { bin: 'kube-apiserver' }
         - { bin: 'kubectl' }
         - { bin: 'kubeadm' }
+    
+    - name: 删除用户
+      shell: userdel haproxy
 
     - name: 删除证书文件
       file:
