@@ -45,6 +45,9 @@
       dest: /{{ remote_dir }}/haproxy_install.sh
       mode: 755
 
+- name: 添加用户和用户组
+  shell:  groupadd haproxy && useradd -g haproxy haproxy
+
 - name: 编译安装 haproxy
   shell: /bin/bash /{{ remote_dir }}/haproxy_install.sh
 
