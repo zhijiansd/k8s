@@ -13,12 +13,13 @@
 > 注: Master节点使用KeepAlived+HaProxy进行高可用负载均衡
 + Keepalived对Master节点的Kube-apiserver提供高可用VIP服务
 + Haproxy监听VIP对Kube-apiserver提供负载均衡服务，所有组件通过开放的8443端口访问
++ 更改、添加所有节点/etc/hosts下的hosts
 
 ---
 应用规划
 ---
 
-|  系统 | CFSSL| ETCD   |KeepAlived|HaProxy|Kubernetes|Containerd|Crictl|cni-plugins|flannel|
+|  系统 | CFSSL| ETCD   |KeepAlived|HaProxy|Kubernetes|Containerd|Crictl|Cni-plugins|Flannel|
 |:-----:|:----:|:-----:|:---------:|:-----:|:--------:|:-------:|:-----:|:---------:|:-----:|
 |CentOS8| 1.5.0|v3.4.14|   2.1.5   | 2.3.2 |  v1.19.5 | 1.4.3   |v1.19.0|  v0.9.0   |v0.13.0|
 
