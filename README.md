@@ -13,7 +13,6 @@
 > 注: Master节点使用KeepAlived+HaProxy进行高可用负载均衡
 + Keepalived对Master节点的Kube-apiserver提供高可用VIP服务
 + Haproxy监听VIP对Kube-apiserver提供负载均衡服务，所有组件通过开放的8443端口访问
-+ 更改、添加所有节点/etc/hosts下的hosts
 
 ---
 应用规划
