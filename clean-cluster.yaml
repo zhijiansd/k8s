@@ -25,6 +25,8 @@
         - { path: '/usr/libexec/flannel' }
         - { path: '/etc/sysconfig/flanneld' }
         - { path: '/etc/containerd' }
+        - { path: '/etc/cni/net.d' }
+        - { path: '/opt/cni/bin' }
 
     - name: 删除启动项文件
       file:
@@ -57,7 +59,7 @@
         state: absent
 
     - name: 删除 网桥
-      shell: ip link del kube-ipvs0 && ip link del flannel0
+      shell: ip link del kube-ipvs0 && ip link del flannel0 && ip link del cni0
 
     - name: 清理 iptables 规则
       shell: iptables -F && iptables -X && iptables -Z
@@ -117,7 +119,7 @@
         - { bin: 'kube-apiserver' }
         - { bin: 'kubectl' }
         - { bin: 'kubeadm' }
-    
+
     - name: 删除用户
       shell: userdel haproxy
 
