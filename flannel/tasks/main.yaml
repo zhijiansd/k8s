@@ -12,10 +12,6 @@
   file:
       path: "{{ cni_dir }}"
       state: directory
-- name: 新建 cni 目录
-  file:
-      path: "{{ cni_dir }}"
-      state: directory
 - name: 解压 cni-plugins 文件
   unarchive: 
            src: /{{ remote_dir }}/cni-plugins-linux-amd64-{{ cni_plugins_version }}.tgz
