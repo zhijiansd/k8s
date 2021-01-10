@@ -24,4 +24,5 @@ etcd_prefix: "/kube/network"
 ca_file: "/etc/ssl/etcd/ca.pem"
 etcd_certfile: "/etc/ssl/etcd/etcd.pem"
 etcd_keyfile: "/etc/ssl/etcd/etcd-key.pem" 
+network: "10.222.0.0/16"
 
