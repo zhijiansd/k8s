@@ -3,7 +3,7 @@ bin_dir: "/usr/bin"
 config_dir: "/etc/kubernetes"
 config_file: "apiserver"
 etcd_endpoints: "https://192.168.100.136:2379,https://192.168.100.137:2379,https://192.168.100.138:2379"
-cluster_cidr: "10.244.0.0/16"
+cluster_cidr: "10.222.0.0/16"
 
 cert_dir: "/etc/ssl/kubernetes"
 log_dir: "/var/log/kubernetes"
