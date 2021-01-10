@@ -5,7 +5,7 @@ config_file: "controller-manager"
 cert_dir: "/etc/ssl/kubernetes"
 controller_manager_kubeconfig: "kube-controller-manager.kubeconfig"
 
-cluster_cidr: "10.244.0.0/16"
+cluster_cidr: "10.222.0.0/16"
 service_cluster_ip_range: "10.244.0.0/16" 
 cidr_mask_size: "24"
 
