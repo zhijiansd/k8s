@@ -19,6 +19,9 @@ authorization:
   webhook:
     cacheAuthorizedTTL: 5m
     cacheUnauthorizedTTL: 30s
+networkPlugin: cni
+cniConfDir: {{ cni_conf_dir }}
+cniBinDir: {{ cni_bin_dir }}
 cgroupDriver: cgroupfs
 cgroupRoot: ""
 cgroupsPerQOS: true
@@ -27,7 +30,7 @@ cpuCfsQuotaPeriod: 100ms
 cpuManagerPolicy: static
 cpuManagerReconcilePeriod: 1m
 clusterDNS:
-- 10.244.0.2
+- {{ cluster_dns }}
 clusterDomain: cluster.local
 enableDebuggingHandlers: true
 eventQps: 10
@@ -69,7 +72,6 @@ maxOpenFiles: 1000000
 maxPods: 110
 maximumDeadContainers: -1
 minimumImageTTLDuration: 2m
-networkPlugin: cni
 podMaxPids: -1
 registryBurst: 10
 registryQps: 5
