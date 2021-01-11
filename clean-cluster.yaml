@@ -27,6 +27,7 @@
         - { path: '/etc/containerd' }
         - { path: '/etc/cni/net.d' }
         - { path: '/opt/cni/bin' }
+        - { path: '/var/lib/cni' }
 
     - name: 删除启动项文件
       file:
