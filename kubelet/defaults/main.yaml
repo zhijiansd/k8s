@@ -6,6 +6,9 @@ local_dir: "root"
 
 cert_dir: "/etc/ssl/kubernetes"
 ca_certfile: "ca.pem"
+cni_conf_dir: "/etc/cni/net.d"
+cni_bin_dir: "/opt/cni/bin"
+cluster_dns: "10.244.0.2"
 
 log_dir: "/var/log/kubernetes"
 log_file: "kubelet.log" 
