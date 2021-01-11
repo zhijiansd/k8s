@@ -9,7 +9,7 @@ KUBE_ETCD_CONFIG="--etcd-compaction-interval=5m --etcd-count-metric-poll-period=
 
 KUBE_API_ADDRESS="--advertise-address={{ ansible_default_ipv4.address }} --bind-address={{ ansible_default_ipv4.address }}"
 KUBE_API_PORT="--secure-port=6443"
-KUBE_SERVICE_ADDRESSES="--service-cluster-ip-range={{ cluster_cidr }}"
+KUBE_SERVICE_ADDRESSES="--service-cluster-ip-range={{ service_cluster_cidr }}"
 
 KUBE_ENABLE_ADMISSION_PLUGINS="--enable-admission-plugins=NamespaceLifecycle,LimitRanger,ServiceAccount,TaintNodesByCondition,Priority,DefaultTolerationSeconds,DefaultStorageClass,StorageObjectInUseProtection,PersistentVolumeClaimResize,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,RuntimeClass,ResourceQuota"
 
