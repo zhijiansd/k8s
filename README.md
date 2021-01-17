@@ -105,7 +105,7 @@ ansible-playbook k8s.yaml
 
 # ansible 192.168.100.139 -a "kubectl cluster-info"
 192.168.100.139 | CHANGED | rc=0 >>
-Kubernetes master is running at https://192.168.100.150:8443
+Kubernetes control plane is running at https://192.168.100.150:8443
 
 # ansible 192.168.100.139 -a "kubectl get cs"
 192.168.100.139 | CHANGED | rc=0 >>
