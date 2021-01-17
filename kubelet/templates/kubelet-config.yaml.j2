@@ -10,18 +10,13 @@ authentication:
   x509:
     clientCAFile: {{ cert_dir }}/{{ ca_certfile }}
   webhook:
-    cacheTTL: 2m
     enabled: true
-  anonymous:
-    enabled: false
-authorization:
-  mode: Webhook
-  webhook:
+    cacheTTL: 2m
     cacheAuthorizedTTL: 5m
     cacheUnauthorizedTTL: 30s
+  anonymous:
+    enabled: false
 networkPlugin: cni
-cniConfDir: {{ cni_conf_dir }}
-cniBinDir: {{ cni_bin_dir }}
 cgroupDriver: cgroupfs
 cgroupRoot: ""
 cgroupsPerQOS: true
@@ -33,61 +28,68 @@ clusterDNS:
 - {{ cluster_dns }}
 clusterDomain: cluster.local
 enableDebuggingHandlers: true
-eventQps: 10
-eventBurst: 5 
+eventBurst: 10 
+eventQps: 5
 evictionHard:
-    memory.available:  "15%"
-    imagefs.available: "15%"
-    nodefs.available: "15%"
-    nodefs.inodesFree: "5%"
+  memory.available:  "15%"
+  imagefs.available: "15%"
+  nodefs.available: "15%"
+  nodefs.inodesFree: "5%"
 evictionMaxPodGracePeriod: -1
 evictionMinimumReclaim:
-    memory.available:  "10%"
-    imagefs.available: "10%"
-    nodefs.available: "10%"
+  memory.available:  "10%"
+  imagefs.available: "10%"
+  nodefs.available: "10%"
 evictionPressureTransitionPeriod: 5m
 evictionSoft:
-    memory.available:  "5%"
-    imagefs.available: "5%"
-    nodefs.available: "5%"
+  memory.available:  "5%"
+  imagefs.available: "5%"
+  nodefs.available: "5%"
 evictionSoftGracePeriod:
-    memory.available:  2m
-    imagefs.available: 2m
-    nodefs.available: 2m
+  memory.available:  2m
+  imagefs.available: 2m
+  nodefs.available: 2m
 experimentalAllocatableIgnoreEviction: false
 failSwapOn: false
 fileCheckFrequency: 20s
 hairpinMode: promiscuous-bridge
+housekeepingInterval: 10s
 httpCheckFrequency: 20s
 imageGCHighThreshold: 85
 imageGCLowThreshold: 80
-imagePullProgressDeadline: 5m
+kernelMemcgNotification: true
 kubeAPIBurst: 10
 kubeAPIQPS: 5
 kubeReserved:
-    cpu: "500m"
-    memory: "512Mi"
-    ephemeral-storage: "512Mi"
+  cpu: "500m"
+  memory: "512Mi"
+  ephemeral-storage: "512Mi"
+loggingFormat: text
 maxOpenFiles: 1000000
 maxPods: 110
 maximumDeadContainers: -1
 minimumImageTTLDuration: 2m
+nodeStatusUpdateFrequency: 10s
+nonMasqueradeCidr: {{ non_masquerade_cidr }}
 podMaxPids: -1
+podsPerCore: 0 
 registryBurst: 10
 registryQps: 5
-kubeletCgroups: ""
+resolvConf: {{ resolv_conf }}
 rotateCertificates: true
 rotateServerCertificates: true
 runtimeRequestTimeout: 2m
-serializeImagePulls: false
+serializeImagePulls: true
 streamingConnectionIdleTimeout: 4h
 syncFrequency: 1m
 systemCgroups: ""
 systemReserved:
-    cpu: "500m"
-    memory: "512Mi"
-    ephemeral-storage: "512Mi"
+  cpu: "500m"
+  memory: "512Mi"
+  ephemeral-storage: "512Mi"
 systemReservedCgroup: ""
+topologyManagerPolicy: none
+topologyManagerScope: container
 featureGates:    
-    RotateKubeletClientCertificate: true
-    RotateKubeletServerCertificate: true
+  RotateKubeletClientCertificate: true
+  RotateKubeletServerCertificate: true

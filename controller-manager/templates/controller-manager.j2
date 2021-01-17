@@ -1,5 +1,3 @@
-KUBE_LOGTOSTDERR="--logtostderr=true --alsologtostderr=true"
-KUBE_LOG_LEVEL="--v=2 --stderrthreshold=2"
 KUBE_ADDRESSES="--bind-address={{ ansible_default_ipv4.address }}"
 KUBE_CONTROLLER_MANAGER_PORT="--secure-port=10257"
 
@@ -14,7 +12,7 @@ KUBE_CONTROLLER_MANAGER_TLS_PRIVATE_KEY_FILE="--tls-private-key-file={{ cert_dir
 KUBE_CONTROLLER_MANAGER_CONFIG="--kubeconfig={{ config_dir }}/{{ controller_manager_kubeconfig }} --authentication-kubeconfig={{ config_dir }}/{{ controller_manager_kubeconfig }} --authorization-kubeconfig={{ config_dir }}/{{ controller_manager_kubeconfig }}"
 
 KUBE_SERVICE_ADDRESSES="--allocate-node-cidrs=true --cluster-cidr={{ cluster_cidr }} --service-cluster-ip-range={{ service_cluster_ip_range }} --node-cidr-mask-size={{ cidr_mask_size }}"
-KUBE_LEADER_ELECT="--leader-elect=true --leader-elect-lease-duration=15s --leader-elect-renew-deadline=10s --leader-elect-retry-period=2s"
+KUBE_LEADER_ELECT="--leader-elect=true --leader-elect-lease-duration=15s --leader-elect-renew-deadline=10s --leader-elect-retry-period=2s --leader-elect-resource-lock=endpointsleases --leader-elect-resource-name=kube-controller-manager --leader-elect-resource-namespace=kube-system"
 
 REQUESTHEADER_ALLOWED_NAMES="--requestheader-allowed-names"
 REQUESTHEADER_CLIENT_CA_FILE="--requestheader-client-ca-file={{ cert_dir }}/{{ ca_certfile }}"
@@ -22,6 +20,7 @@ REQUESTHEADER="--requestheader-extra-headers-prefix=X-Remote-Extra- --requesthea
 HORIZONTAL_POD="--horizontal-pod-autoscaler-cpu-initialization-period=5m --horizontal-pod-autoscaler-downscale-stabilization=5m --horizontal-pod-autoscaler-initial-readiness-delay=30s --horizontal-pod-autoscaler-sync-period=15s"
 
 CONCURRENT_CONFIG="--concurrent-deployment-syncs=5 --concurrent-endpoint-syncs=5 --concurrent-gc-syncs=20 --concurrent-namespace-syncs=10 --concurrent-replicaset-syncs=5 --concurrent-resource-quota-syncs=5 --concurrent-service-endpoint-syncs=5 --concurrent-service-syncs=1 --concurrent-serviceaccount-token-syncs=5 --concurrent-statefulset-syncs=5 --concurrent-ttl-after-finished-syncs=5 --concurrent_rc_syncs=5"
-KUBE_LOG_ARGS="--log-dir={{ log_dir }} --log-file={{ log_dir }}/{{ log_file }} --log-file-max-size=1800 --log-flush-frequency=5s --logging-format=text"
+KUBE_LOG_ARGS="--alsologtostderr=true --log-dir={{ log_dir }} --log-file={{ log_dir }}/{{ log_file }} --log-file-max-size=1800 --log-flush-frequency=5s --logging-format=text --logtostderr=true --skip-headers=true --skip-log-headers=true --stderrthreshold=2 --v=2"
 
-KUBE_CONTROLLER_MANAGER_ARGS="--attach-detach-reconcile-sync-period=1m --cluster-name={{ cluster_name }} --controllers=*,bootstrapsigner,tokencleaner --deployment-controller-sync-period=30s --cluster-signing-duration=87600h --enable-garbage-collector=true --kube-api-burst=300 --kube-api-qps=200 --large-cluster-size-threshold=50 --terminated-pod-gc-threshold=125 --node-eviction-rate=0.1 --node-monitor-grace-period=40s --node-monitor-period=5s --node-startup-grace-period=1m --pod-eviction-timeout=5m --pvclaimbinder-sync-period=15s --use-service-account-credentials=true --feature-gates=RotateKubeletServerCertificate=true"
+KUBE_CONTROLLER_MANAGER_ARGS="--attach-detach-reconcile-sync-period=1m --cluster-name={{ cluster_name }} --cluster-signing-duration=87600h --controllers=*,bootstrapsigner,tokencleaner --deployment-controller-sync-period=30s --enable-garbage-collector=true --kube-api-burst=300 --kube-api-qps=200 --large-cluster-size-threshold=50 --terminated-pod-gc-threshold=125 --namespace-sync-period=5m --node-eviction-rate=0.1 --node-monitor-grace-period=40s --node-monitor-period=5s --node-startup-grace-period=1m --pod-eviction-timeout=5m --pvclaimbinder-sync-period=15s --secondary-node-eviction-rate=0.01 --terminated-pod-gc-threshold=1250 --unhealthy-zone-threshold=0.55 --use-service-account-credentials=true --feature-gates=RotateKubeletServerCertificate=true"
+

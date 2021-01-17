@@ -8,11 +8,7 @@
       with_items:
         - { name: 'kubelet' }
         - { name: 'kube-proxy' }
-        - { name: 'flanneld' }
         - { name: 'containerd' }
-
-    - name: 删除软链接
-      shell: rm -rf /etc/systemd/system/containerd.service.requires/flanneld.service
 
     - name: 删除相关目录
       file:
@@ -22,8 +18,6 @@
         - { path: '/var/log/kubernetes' }
         - { path: '/etc/kubernetes' }
         - { path: '/var/lib/kubelet' }
-        - { path: '/usr/libexec/flannel' }
-        - { path: '/etc/sysconfig/flanneld' }
         - { path: '/etc/containerd' }
         - { path: '/etc/cni/net.d' }
         - { path: '/opt/cni/bin' }
@@ -36,7 +30,6 @@
       with_items:
         - { service: 'kubelet' }
         - { service: 'kube-proxy' }
-        - { service: 'flanneld' }
         - { service: 'containerd' }
 
     - name: 删除二进制文件
@@ -46,8 +39,6 @@
       with_items:
         - { bin: 'kubelet' }
         - { bin: 'kube-proxy' }
-        - { bin: 'flanneld-start' }
-        - { bin: 'flanneld' }
         - { bin: 'ctr' }
         - { bin: 'containerd' }
         - { bin: 'containerd-shim' }
@@ -60,7 +51,7 @@
         state: absent
 
     - name: 删除 网桥
-      shell: ip link del kube-ipvs0 && ip link del cni0
+      shell: ip link del kube-ipvs0 
 
     - name: 清理 iptables 规则
       shell: iptables -F && iptables -X && iptables -Z

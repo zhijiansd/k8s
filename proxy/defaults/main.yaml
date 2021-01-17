@@ -2,8 +2,12 @@ local_dir: "root"
 config_dir: "/etc/kubernetes"
 config_file: "proxy"
 bin_dir: "/usr/bin"
+log_dir: "/var/log/kubernetes"
+log_file: "proxy.log"
+
 proxy_confing: "proxy-confing.yaml"
 cluster_cidr: "10.222.0.0/16"
 proxy_kubeconfig: "kube-proxy.kubeconfig"
-log_dir: "/var/log/kubernetes"
-log_file: "proxy.log"
+healthz_port: 10256
+metrics_port: 10249
+proxy_mode: ipvs

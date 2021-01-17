@@ -1,7 +1,5 @@
-KUBE_LOGTOSTDERR="--alsologtostderr=true --logtostderr=true"
-KUBE_LOG_LEVEL="--v=2 --stderrthreshold=2"
-
 KUBELET_HOSTNAME="--hostname-override={{ ansible_hostname }}"
 KUBELET_CONTAINER_RUNTIME="--container-runtime={{ container_runtime }} --container-runtime-endpoint={{ container_runtime_endpoint }}"
-KUBE_LOG_ARGS="--log-dir={{ log_dir }} --log-file={{ log_dir }}/{{ log_file }} --log-file-max-size=1800 --log-flush-frequency=5s"
-KUBELET_ARGS="--register-node=true --root-dir={{ kubelet_dir }} --bootstrap-kubeconfig={{ config_dir }}/{{ bootstrap_kubeconfig }} --cert-dir={{ config_dir }}/pki --config={{ config_dir }}/{{ kubelet_confing }} --kubeconfig={{ config_dir }}/{{ kubelet_kubeconfig }}"
+
+KUBE_LOG_ARGS="--alsologtostderr=true --log-dir={{ log_dir }} --log-file={{ log_dir }}/{{ log_file }} --log-file-max-size=1800 --log-flush-frequency=5s --logtostderr=true --skip-headers=true --skip-log-headers=true --stderrthreshold=2 --v=2"
+KUBELET_ARGS="--housekeeping-interval=10s --register-node=true --root-dir={{ kubelet_dir }} --bootstrap-kubeconfig={{ config_dir }}/{{ bootstrap_kubeconfig }} --cert-dir={{ config_dir }}/pki --config={{ config_dir }}/{{ kubelet_confing }} --kubeconfig={{ config_dir }}/{{ kubelet_kubeconfig }}"

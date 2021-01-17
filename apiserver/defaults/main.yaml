@@ -12,11 +12,13 @@ ca_certfile: "ca.pem"
 ca_keyfile: "ca-key.pem"
 etcd_certfile: "apiserver-etcd-client.pem"
 etcd_keyfile: "apiserver-etcd-client-key.pem"
+
 apiserver_certfile: "apiserver.pem"
 apiserver_keyfile: "apiserver-key.pem"
 proxy_certfile: "metrics-server.pem"
 proxy_keyfile: "metrics-server-key.pem"
 
+service_account_issuer: "https://kubernetes.default.svc.cluster.local/.well-known/openid-configuration"
 log_file: "apiserver.log"
 audit_log_file: "audit.log"
 tls_bootstrapping: "tls-bootstrapping.yaml"

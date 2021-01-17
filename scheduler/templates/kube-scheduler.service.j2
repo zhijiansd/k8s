@@ -5,8 +5,6 @@ Documentation=https://kubernetes.io/zh/docs
 [Service]
 EnvironmentFile=-{{ config_dir }}/{{ config_file }}
 ExecStart={{ bin_dir }}/kube-scheduler \
-            $KUBE_LOGTOSTDERR \
-            $KUBE_LOG_LEVEL \
             $KUBE_ADDRESSES \
             $KUBE_SCHEDULER_PORT \
             $KUBE_SCHEDULER_TLS_CERT_FILE \

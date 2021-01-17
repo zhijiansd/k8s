@@ -6,8 +6,6 @@ Documentation=https://kubernetes.io/zh/docs
 WorkingDirectory=/var/lib/kubelet
 EnvironmentFile=-/etc/kubernetes/kubelet
 ExecStart=/usr/bin/kubelet \
-            $KUBE_LOGTOSTDERR \
-            $KUBE_LOG_LEVEL \
             $KUBELET_HOSTNAME \
             $KUBELET_CONTAINER_RUNTIME \
             $KUBE_LOG_ARGS \

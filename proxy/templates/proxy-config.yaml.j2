@@ -12,11 +12,11 @@ conntrack:
   maxPerCore: 32768
   min: 131072
   TcpTimeoutCloseWait: 1h
-  TcpTimeout: 24h 
-healthzBindAddress: 0.0.0.0:10256
-metricsBindAddress: {{ ansible_default_ipv4.address }}
-metricsPort: 10249
-mode: "ipvs"
+  TcpTimeoutEstablished: 24h 
+healthzBindAddress: {{ ansible_default_ipv4.address }}:{{ healthz_port }}
+metricsBindAddress: {{ ansible_default_ipv4.address }}:{{ metrics_port }}
+metricsPort: {{ metrics_port }}
+mode: {{ proxy_mode }}
 ipvsSyncPeriod: 30s
 kubeApiBurst: 10
 kubeApiQps: 5

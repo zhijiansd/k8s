@@ -1,4 +1,2 @@
-KUBE_LOGTOSTDERR="--alsologtostderr=true --logtostderr=true"
-KUBE_LOG_LEVEL="--v=0"
-KUBE_LOG_ARGS="--log-dir={{ log_dir }} --log-file={{ log_dir }}/{{ log_file }} --log-file-max-size=1800 --log-flush-frequency=5s"
+KUBE_LOG_ARGS="--alsologtostderr=true --log-dir={{ log_dir }} --log-file={{ log_dir }}/{{ log_file }} --log-file-max-size=1800 --log-flush-frequency=5s --logtostderr=true --skip-headers=true --skip-log-headers=true --stderrthreshold=2 --v=2"
 KUBE_PROXY_ARGS="--config={{ config_dir }}/{{ proxy_confing }}"

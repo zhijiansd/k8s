@@ -33,12 +33,6 @@
           src: etcd.yaml.j2 
           dest: "{{ work_dir }}/{{ config_file }}"
 
-- name: 复制 etcd-flanneld.sh 文件
-  template:
-          src: etcd-flanneld.sh.j2
-          dest: /{{ remote_dir }}/etcd-flanneld.sh
-          mode: 755
-
 - name: 重载
   command: systemctl daemon-reload
 
@@ -47,7 +41,3 @@
           name: etcd
           state: started
           enabled: yes
-
-- name: 配置 flannel 使用 etcd
-  shell: /bin/bash /{{ remote_dir }}/etcd-flanneld.sh
-  when: ansible_default_ipv4.address == "192.168.100.136"

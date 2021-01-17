@@ -6,22 +6,21 @@ After=network.target
 [Service]
 EnvironmentFile=-{{ config_dir }}/{{ config_file }}
 ExecStart={{ bin_dir }}/kube-apiserver \
-            $KUBE_LOGTOSTDERR \
-            $KUBE_LOG_LEVEL \
+            $KUBE_API_ADDRESS \
+            $KUBE_API_PORT \
+            $KUBE_SERVICE_ADDRESSES \
             $KUBE_ETCD_SERVERS \
             $KUBE_ETCD_CAFILE \
             $KUBE_ETCD_CERTFILE \
             $KUBE_ETCD_KEYFILE \
             $KUBE_ETCD_CONFIG \
-            $KUBE_API_ADDRESS \
-            $KUBE_API_PORT \
-            $KUBE_SERVICE_ADDRESSES \
             $KUBE_ENABLE_ADMISSION_PLUGINS \
-            $KUBE_API_CLIENT_CA_FILE \
-            $KUBE_API_SERVICE_ACCOUNT_KEY_FILE \
+            $KUBE_SERVICE_ACCOUNT_ISSUER \
+            $KUBE_CLIENT_CA_FILE \
+            $KUBE_SERVICE_ACCOUNT_KEY_FILE \
+            $KUBE_SERVICE_ACCOUNT_SIGNING_KEY_FILE \
             $KUBE_API_TLS_CERT_FILE \
             $KUBE_API_TLS_PRIVATE_KEY_FILE \
-            $KUBELET_CERTIFICATE_AUTHORITY \
             $KUBELET_CLIENT_CERTIFICATE \
             $KUBELET_CLIENT_KEY \
             $KUBELET_CONFIG \

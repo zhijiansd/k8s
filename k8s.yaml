@@ -129,4 +129,3 @@
        - containerd
        - kubelet
        - proxy
-       - flannel
