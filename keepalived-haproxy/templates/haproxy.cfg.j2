@@ -9,8 +9,8 @@ global
                     
 defaults                  
         log     global
-        mode    http                  ##默认模式{tcp|http|health},tcp是4层,http是7层,health只会返回OK
-        option  httplog               ##日志类别:http日志格式
+        mode    http                  
+        option  httplog               
         option  dontlognull           ##不记录健康检查的日志信息
         retries 3                     ##3次连接失败就认为服务不可用
         option  redispatch            ##ServerID对应的服务器挂掉后,强制定向到其他健康服务器
