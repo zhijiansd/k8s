@@ -23,6 +23,7 @@
 |CentOS8| 1.5.0|v3.4.14|   2.1.5   | 2.3.2 |  v1.19.5 | 1.4.3   |v1.19.0|
 
 > 注1：变量化配置更改项主要在"defaults/main.yaml"文件中，cfssl安装在ansible主机，kubernetes压缩在ansible主机，其他应用下载压缩包在ansible主机即可。
+
 > 注2: 关于集群网络，可以选择使用yaml部署Calico、Cilium、Flannel(需安装cni-plugins[/opt/cni/bin/])等网络插件
 
 ---
