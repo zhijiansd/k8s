@@ -18,12 +18,12 @@
 应用规划
 ---
 
-|  系统 | CFSSL| ETCD   |KeepAlived|HaProxy|Kubernetes|Containerd|Crictl|Cni-plugins|Flannel|
-|:-----:|:----:|:-----:|:---------:|:-----:|:--------:|:-------:|:-----:|:---------:|:-----:|
-|CentOS8| 1.5.0|v3.4.14|   2.1.5   | 2.3.2 |  v1.19.5 | 1.4.3   |v1.19.0|  v0.9.0   |v0.13.0|
+|  系统 | CFSSL| ETCD   |KeepAlived|HaProxy|Kubernetes|Containerd|Crictl|
+|:-----:|:----:|:-----:|:---------:|:-----:|:--------:|:-------:|:-----:|
+|CentOS8| 1.5.0|v3.4.14|   2.1.5   | 2.3.2 |  v1.19.5 | 1.4.3   |v1.19.0|
 
 > 注1：变量化配置更改项主要在"defaults/main.yaml"文件中，cfssl安装在ansible主机，kubernetes压缩在ansible主机，其他应用下载压缩包在ansible主机即可。
-> 注2: 关于集群网络，这里使用二进制部署Flannel，也可以选择使用yaml部署Calico、Cilium、Flannel等网络插件
+> 注2: 关于集群网络，可以选择使用yaml部署Calico、Cilium、Flannel等网络插件
 
 ---
 安装ansible
@@ -118,9 +118,9 @@ etcd-1               Healthy   {"health":"true"}
 # ansible 192.168.100.139 -a "kubectl get nodes"
 192.168.100.139 | CHANGED | rc=0 >>
 NAME    STATUS   ROLES    AGE   VERSION
-node1   Ready    <none>   14h   v1.19.5
-node2   Ready    <none>   14h   v1.19.5
-node3   Ready    <none>   14h   v1.19.5
+node1   Ready    <none>   14h   v1.20.2
+node2   Ready    <none>   14h   v1.20.2
+node3   Ready    <none>   14h   v1.20.2
 ```
 
 ---
