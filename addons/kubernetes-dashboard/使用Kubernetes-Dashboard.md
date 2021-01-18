@@ -24,4 +24,4 @@ kubernetes-dashboard        NodePort    10.244.186.22    <none>        443:38443
 ---
 登录 Kubernetes-Dashboard
 ---
-+ 浏览器输入https://nodeip:nodeport即可进入kubernetes-dashboard，之后选择token，输入token即可登录
++ 浏览器输入https://nodeip:nodeport 即可进入kubernetes-dashboard，之后选择token，输入token即可登录
