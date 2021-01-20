@@ -27,7 +27,7 @@ PROXY_CLIENT_KEY_FILE="--proxy-client-key-file={{ cert_dir }}/{{ proxy_keyfile }
 
 REQUESTHEADER_ALLOWED_NAMES="--requestheader-allowed-names"
 REQUESTHEADER_CLIENT_CA_FILE="--requestheader-client-ca-file={{ cert_dir }}/{{ ca_certfile }}"
-REQUESTHEADER="--requestheader-extra-headers-prefix=X-Remote-Extra- --requestheader-group-headers=X-Remote-Group --requestheader-username-headers=X-Remote-User"
+REQUESTHEADER_CONFIG="--requestheader-extra-headers-prefix=X-Remote-Extra- --requestheader-group-headers=X-Remote-Group --requestheader-username-headers=X-Remote-User"
 
 KUBE_AUDIT_LOG_ARGS="--audit-log-path={{ log_dir }}/{{ audit_log_file }} --audit-log-version=audit.k8s.io/v1 --audit-log-format=json --audit-log-maxage=180 --audit-log-maxbackup=10 --audit-log-maxsize=100 --audit-log-mode=blocking --audit-log-truncate-enabled --audit-log-truncate-max-batch-size=10485760 --audit-log-truncate-max-event-size=102400"
 KUBE_LOG_ARGS="--alsologtostderr=true --log-dir={{ log_dir }} --log-file={{ log_dir }}/{{ log_file }} --log-file-max-size=1800 --log-flush-frequency=5s --logging-format=text --logtostderr=true --skip-log-headers=true --stderrthreshold=2 --v=2"
