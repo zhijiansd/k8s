@@ -21,7 +21,6 @@ ETCD_CSR='etcd-csr.json'
 API_ETCD_CLIENT_CSR='apiserver-etcd-client-csr.json'
 ETCD_CLIENT_CSR='etcd-client-csr.json'
 METRICS_SERVER_CSR='metrics-server-csr.json'
-DASHBOARD_CSR='dashboard-csr.json'
 
 API_BARENAME='apiserver'
 APISERVER_KUBELET_CLIENT_BARENAME='apiserver-kubelet-client'
@@ -32,7 +31,6 @@ ETCD_BARENAME='etcd'
 API_ETCD_CLIENT_BARENAME='apiserver-etcd-client'
 ETCD_CLIENT_BARENAME='etcd-client'
 METRICS_SERVER_BARENAME='metrics-server'
-DASHBOARD_BARENAME='dashboard'
 
 set -x
 
@@ -277,30 +275,6 @@ if [ ! -f ${METRICS_SERVER_CSR} ]; then
 EOF
 fi
 
-# 创建用来为 Kubernetes-dashboard 生成密钥和证书的 JSON 配置文件
-
-if [ ! -f ${DASHBOARD_CSR} ]; then
-   cat << EOF > ${DASHBOARD_CSR}
-{
-    "CN": "kubernetes-dashboard",
-    "hosts": [],
-    "key": {
-        "algo": "rsa",
-        "size": 2048
-    },
-    "names": [
-        {
-            "C": "CN",
-            "L": "ChengDu",
-            "ST": "ChengDu",
-            "O": "K8S",
-            "OU": "kubernetes-dashboard"
-        }
-    ]
-}
-EOF
-fi
-
 # 创建用来为 etcd-server 生成密钥和证书的 JSON 配置文件
 
 if [ ! -f ${ETCD_CSR} ]; then
@@ -408,11 +382,6 @@ ${PROXY_CSR} | cfssljson -bare ${PROXY_BARENAME} > /dev/null 2>&1
 cfssl gencert -ca=ca.pem -ca-key=ca-key.pem \
 --config=${CONFIG} -profile=kubernetes \
 ${METRICS_SERVER_CSR} | cfssljson -bare ${METRICS_SERVER_BARENAME} > /dev/null 2>&1 
-
-# 为 Kubernetes-dashboard 生成密钥和证书
-cfssl gencert -ca=ca.pem -ca-key=ca-key.pem \
---config=${CONFIG} -profile=kubernetes \
-${DASHBOARD_CSR} | cfssljson -bare ${DASHBOARD_BARENAME} > /dev/null 2>&1
 
 # 为 etcd-server 生成密钥和证书
 cfssl gencert -ca=ca.pem -ca-key=ca-key.pem \
