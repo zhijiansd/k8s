@@ -22,10 +22,10 @@ KUBELET_CLIENT_CERTIFICATE="--kubelet-client-certificate={{ cert_dir }}/{{ apise
 KUBELET_CLIENT_KEY="--kubelet-client-key={{ cert_dir }}/{{ apiserver_keyfile }}"
 KUBELET_CONFIG="--kubelet-preferred-address-types=Hostname,InternalDNS,InternalIP,ExternalDNS,ExternalIP --kubelet-timeout=5s"
 
-PROXY_CLIENT_CERTIFICATE="--proxy-client-cert-file={{ cert_dir }}/{{ proxy_certfile }}"
-PROXY_CLIENT_KEY="--proxy-client-key-file={{ cert_dir }}/{{ proxy_keyfile }}"
+PROXY_CLIENT_CERT_FILE="--proxy-client-cert-file={{ cert_dir }}/{{ proxy_certfile }}"
+PROXY_CLIENT_KEY_FILE="--proxy-client-key-file={{ cert_dir }}/{{ proxy_keyfile }}"
 
-REQUESTHEADER_ALLOWED_NAMES="--requestheader-allowed-names=proxy"
+REQUESTHEADER_ALLOWED_NAMES="--requestheader-allowed-names"
 REQUESTHEADER_CLIENT_CA_FILE="--requestheader-client-ca-file={{ cert_dir }}/{{ ca_certfile }}"
 REQUESTHEADER="--requestheader-extra-headers-prefix=X-Remote-Extra- --requestheader-group-headers=X-Remote-Group --requestheader-username-headers=X-Remote-User"
 
