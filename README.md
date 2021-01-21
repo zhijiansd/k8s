@@ -128,6 +128,8 @@ node3   Ready    <none>   14h   v1.20.2
 清理集群
 ---
 
+> 注:清除前请删除所有Pod
+
 ```bash
 ansible-playbook clean-cluster.yaml
 ```
