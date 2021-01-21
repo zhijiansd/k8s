@@ -19,7 +19,7 @@
             "L": "ChengDu",
             "ST": "ChengDu",
             "O": "system:masters",
-            "OU": "System"
+            "OU": "metrics-server"
         }
     ]
 }
