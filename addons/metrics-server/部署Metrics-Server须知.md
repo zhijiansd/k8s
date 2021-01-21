@@ -86,4 +86,19 @@ metricsBindAddress: NodeIP:10249
 metricsPort: 10249
 ```
 
+### 官方yaml文件修改
+
+```bash
+# vim metrics-server.yaml
+      containers:
+      - args:
+        - --cert-dir=/tmp
+        - --secure-port=4443
+        - --kubelet-insecure-tls
+        - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+        - --kubelet-use-node-status-port
+---
+
 > 官方配置聚合层的文档:https://kubernetes.io/zh/docs/tasks/extend-kubernetes/configure-aggregation-layer/
+
+> 二进制安装的master节点也需要安装containerd、kubelet、kube-proxy才能采集指标
