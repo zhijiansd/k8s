@@ -23,7 +23,9 @@
         }
     ]
 }
-# cfssl gencert -ca=ca.pem -ca-key=ca-key.pem --config=ca-config.json -profile=kubernetes metrics-server-csr.json | cfssljson -bare metrics-server
+# cfssl gencert -ca=ca.pem -ca-key=ca-key.pem \
+--config=ca-config.json -profile=kubernetes \
+metrics-server-csr.json | cfssljson -bare metrics-server
 ```
 
 > 注:聚合层证书除了O(组织)必须为"system:masters"外，其他都可以根据实际情况更改。
@@ -80,7 +82,7 @@ authorization:
 
 ```bash
 # vim /etc/kubernetes/proxy-confing.yaml
-metricsBindAddress: nodeip:10249
+metricsBindAddress: NodeIP:10249
 metricsPort: 10249
 ```
 
