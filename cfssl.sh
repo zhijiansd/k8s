@@ -268,7 +268,7 @@ if [ ! -f ${METRICS_SERVER_CSR} ]; then
             "L": "ChengDu",
             "ST": "ChengDu",
             "O": "system:masters",
-            "OU": "System"
+            "OU": "metrics-server"
         }
     ]
 }
