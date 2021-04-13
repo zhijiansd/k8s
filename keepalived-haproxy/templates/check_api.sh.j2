@@ -7,6 +7,7 @@ then
     systemctl restart kube-apiserver
 fi
 sleep 5
-if [ $(ps -C haproxy --no-header |wc -l) -eq 0 ] -o [ $(ps -C kube-apiserver --no-header |wc -l) -eq 0 ]
-    systemctl stop keepalived
+if [ $(ps -C haproxy --no-header |wc -l) -eq 0  -o  $(ps -C kube-apiserver --no-header |wc -l) -eq 0 ]
+then
+   systemctl stop keepalived
 fi    
